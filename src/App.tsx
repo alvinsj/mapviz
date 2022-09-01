@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Map, { Source, Layer, LineLayer, } from "react-map-gl";
 
 import "./App.css";
