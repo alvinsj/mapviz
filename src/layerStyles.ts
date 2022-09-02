@@ -1,17 +1,24 @@
-import { FillLayer} from 'react-map-gl'
+import { FillLayer } from 'react-map-gl'
+import { Theme } from './hooks/useBaseMap'
 
-export const regionLayerStyle = () : FillLayer => ({
-  type: 'fill',
-  paint: {
-    'fill-opacity': 0.1,
-    'fill-outline-color': 'white',
-  }
-} as FillLayer)
+export const regionLayerStyle = ({ theme }: { theme: Theme }): FillLayer =>
+  ({
+    type: 'fill',
+    paint: {
+      'fill-opacity': 0.05,
+      'fill-outline-color': theme === 'dark' ? 'white' : 'black',
+    },
+  } as FillLayer)
 
-export const highlightRegionLayerStyle = () : FillLayer => ({
-  type: 'fill',
-  paint: {
-    'fill-color': 'white',
-    'fill-opacity': 0.3,
-  }
-} as FillLayer)
+export const highlightRegionLayerStyle = ({
+  theme,
+}: {
+  theme: Theme
+}): FillLayer =>
+  ({
+    type: 'fill',
+    paint: {
+      'fill-color': theme === 'dark' ? 'white' : 'black',
+      'fill-opacity': 0.2,
+    },
+  } as FillLayer)

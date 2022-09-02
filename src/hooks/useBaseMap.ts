@@ -1,14 +1,25 @@
-import {useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-const MAP_STYLE_URL = import.meta.env.VITE_MAP_STYLE_URL
+const DARK_MAP_STYLE_URL: string = import.meta.env.VITE_DARK_MAP_STYLE_URL
+const LIGHT_MAP_STYLE_URL: string = import.meta.env.VITE_LIGHT_MAP_STYLE_URL
+
+const THEME_URLS = {
+  dark: DARK_MAP_STYLE_URL,
+  light: LIGHT_MAP_STYLE_URL,
+}
+export type Theme = 'dark' | 'light'
+
 const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
 
-function useData () {
+function useData() {
+  const [theme, setTheme] = useState<Theme>('light')
   const [mapStyle, setMapStyle] = useState()
   const [mapRegions, setMapRegions] = useState()
-
+  const onSwitchTheme = useCallback((newTheme: Theme = 'dark') => {
+    setTheme(newTheme)
+  }, [])
   useEffect(() => {
-    fetch(MAP_STYLE_URL)
+    fetch(THEME_URLS[theme])
       .then((response) => response.json())
       .then((data) => {
         setMapStyle({
@@ -16,10 +27,10 @@ function useData () {
           center: [1.367786, 103.823583],
           zoom: 5.0,
           bearing: 0,
-          pitch: 0
+          pitch: 0,
         })
       })
-  }, [])
+  }, [theme])
 
   useEffect(() => {
     const token = localStorage.getItem('token')?.toString()
@@ -37,7 +48,9 @@ function useData () {
 
   return {
     mapStyle,
-    mapRegions
+    mapRegions,
+    onSwitchTheme,
+    theme,
   }
 }
 export default useData
