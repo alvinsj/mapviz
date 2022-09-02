@@ -24,24 +24,35 @@ import useMultiPolygonLayer from './hooks/useMultiPolygonLayer'
 
 const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 
+const createLayerLabels = (source, labelName) => ({
+  'id': 'poi-labels',
+  'type': 'symbol',
+  source,
+  'layout': {
+    'text-field': ['get', labelName],
+    'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+    'text-radial-offset': 0.5,
+    'text-justify': 'auto',
+    'icon-image': ['get', 'icon']
+  }
+})
+
 function App() {
   const { mapStyle, mapRegions, onSwitchTheme, theme } = useBaseMap()
 
   const mapRef = useRef<MapRef>()
   const hoverFeature = useHoverFeature(mapRef, 'regions')
-  const hoverRegion = hoverFeature?.properties?.cell_id
-
-  const selectedRegion = hoverRegion || ''
+  const selectedRegion = hoverFeature?.properties?.cell_id || ''
   const filter = useMemo(
     () => ['in', 'cell_id', selectedRegion],
     [selectedRegion]
   )
 
-  const { mapLayer: layer1 } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
+  const { mapLayer: layer1, labels: layer1Labels } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
   const hoverLayerFeature = useHoverFeature(mapRef, 'layer1')
   const selectedZoneName = hoverLayerFeature?.properties?.zone_name
   const filterHighlightLayer1 = useMemo(
-    () => ['in', 'zone_name', selectedZoneName],
+    () => ['in', 'zone_name', selectedZoneName || ''],
     [selectedRegion]
   )
 
@@ -83,6 +94,7 @@ function App() {
                 id="layer1-highlighted"
                 filter={filterHighlightLayer1}
               />
+              <Layer {...createLayerLabels('layer1', 'zone_name')} />
             </Source>
           )}
 
