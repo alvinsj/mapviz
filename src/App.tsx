@@ -6,6 +6,7 @@ import Map, {
   NavigationControl,
   ScaleControl,
   MapRef,
+  LayerProps,
 } from 'react-map-gl'
 import maplibreGl from 'maplibre-gl'
 
@@ -24,7 +25,7 @@ import useMultiPolygonLayer from './hooks/useMultiPolygonLayer'
 
 const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 
-const createLayerLabels = (source, labelName) => ({
+const createLayerLabels = (source: string, labelName: string): LayerProps => ({
   'id': 'poi-labels',
   'type': 'symbol',
   source,
@@ -48,7 +49,7 @@ function App() {
     [selectedRegion]
   )
 
-  const { mapLayer: layer1, labels: layer1Labels } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
+  const { mapLayer: layer1 } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
   const hoverLayerFeature = useHoverFeature(mapRef, 'layer1')
   const selectedZoneName = hoverLayerFeature?.properties?.zone_name
   const filterHighlightLayer1 = useMemo(
