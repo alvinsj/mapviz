@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import Map, {
   Source,
   Layer,
@@ -15,9 +15,14 @@ import './App.css'
 import {
   regionLayerStyle,
   highlightRegionLayerStyle,
+  layerStyle,
+  highlightLayerStyle,
 } from './layerStyles'
 import useHoverFeature from './hooks/useHoverFeature'
 import ThemeControl from './ThemeControl'
+import useMultiPolygonLayer from './hooks/useMultiPolygonLayer'
+
+const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 
 function App() {
   const { mapStyle, mapRegions, onSwitchTheme, theme } = useBaseMap()
@@ -29,6 +34,14 @@ function App() {
   const selectedRegion = hoverRegion || ''
   const filter = useMemo(
     () => ['in', 'cell_id', selectedRegion],
+    [selectedRegion]
+  )
+
+  const { mapLayer: layer1 } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
+  const hoverLayerFeature = useHoverFeature(mapRef, 'layer1')
+  const selectedZoneName = hoverLayerFeature?.properties?.zone_name
+  const filterHighlightLayer1 = useMemo(
+    () => ['in', 'zone_name', selectedZoneName],
     [selectedRegion]
   )
 
@@ -57,6 +70,18 @@ function App() {
                 source="regions"
                 id="region-highlighted"
                 filter={filter}
+              />
+            </Source>
+          )}
+
+          {layer1 && (
+            <Source type="geojson" data={layer1}>
+              <Layer {...layerStyle({ theme })} id="layer1" />
+              <Layer
+                {...highlightLayerStyle({ theme })}
+                source="layer1"
+                id="layer1-highlighted"
+                filter={filterHighlightLayer1}
               />
             </Source>
           )}
