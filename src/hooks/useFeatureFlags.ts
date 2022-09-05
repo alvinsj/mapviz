@@ -7,6 +7,8 @@ export type Flag<T> = {
 
 export type GetFlags = (flags: Flag<any>[]) => Promise<{ [key: string]: any }>
 export type SetFlag = (flag: Flag<any>, val: any) => Promise<void>
+export type GetFlag = <T>(f: Flag<T>) => T | undefined
+
 export type UseFeatureFlagsOpts = {
   setFlag: SetFlag
   onError: (e: any) => void

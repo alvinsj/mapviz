@@ -1,10 +1,14 @@
 import { ComponentType, ReactNode } from 'react'
 import { MapProps } from 'react-map-gl'
 
+export type UseControlsProps = {
+  key: string
+}
+
 export type Plugin = {
   name: string
   component: ComponentType<{ mapId: string }>
-  useControls?: (mapId: string) => ReactNode
+  useControls?: (mapId: string, props: UseControlsProps) => ReactNode
 }
 
 export const addMapPlugins =
@@ -49,7 +53,9 @@ export class MapMediator {
   renderCustomControls(mapId: string) {
     const c = this._plugins
       .map((p) => {
-        const control = p.useControls && p.useControls(mapId)
+        const control =
+          p.useControls &&
+          p.useControls(mapId, { key: `customControls-${p.name}` })
         return control
       })
       .filter((c) => c)

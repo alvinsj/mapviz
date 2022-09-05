@@ -9,31 +9,21 @@ import { useTheme } from '../../contexts/ThemeContext'
 
 import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
 import useHoverFeature from '../../hooks/useHoverFeature'
-import useFeatureFlags, { Flag } from '../../hooks/useFeatureFlags'
 import useLayerClickHandler from '../../hooks/useLayerClickHandler'
+import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 
 import { layerStyle, highlightLayerStyle } from './layerStyles'
+import { UseControlsProps } from './MapMediator'
 
 import { MapPluginComponentProps } from '../types'
 import { Theme } from '../../types'
+import { BBOX_ZOOM } from '../../config/featureFlags'
 
 const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 const LAYER_NAME = 'layer1'
-const BBOX_ZOOM = {
-  key: 'feat-bbox-zoom',
-  defaultValue: false,
-}
 
 const modifyColorWithTheme = (theme: Theme) => (color: string) =>
   theme === 'dark' ? lighten(color, 0.3) : darken(color, 0.3)
-const getFeatureFlags = (flags: Flag<any>[]) => {
-  return Promise.resolve(
-    flags.reduce((ret, flag) => {
-      ret[flag.key] = flag.defaultValue
-      return ret
-    }, {} as { [name: string]: any })
-  )
-}
 
 const createLayerLabels = (source: string, labelName: string): LayerProps => ({
   id: 'poi-labels',
@@ -61,7 +51,7 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
 
   const layer1Bbox = bboxPolygon(bbox(mapLayer))
 
-  const { getValue } = useFeatureFlags([BBOX_ZOOM], getFeatureFlags),
+  const [getValue] = useFeatureFlagContext(),
     shouldEnableBboxZoom = getValue(BBOX_ZOOM)
 
   const { map1 } = useMap()
@@ -117,11 +107,8 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
   )
 }
 
-CustomLayer.useControls = () => {
-  const { getValue, replaceFlag } = useFeatureFlags(
-    [BBOX_ZOOM],
-    getFeatureFlags
-  )
+CustomLayer.useControls = (mapId: string, props: UseControlsProps) => {
+  const [getValue, replaceFlag] = useFeatureFlagContext()
 
   const onToggleBox = useCallback(() => {
     const cur = getValue(BBOX_ZOOM)
@@ -129,7 +116,7 @@ CustomLayer.useControls = () => {
   }, [getValue, replaceFlag])
 
   return (
-    <button type="button" onClick={() => onToggleBox()}>
+    <button {...props} type="button" onClick={() => onToggleBox()}>
       Box
     </button>
   )
