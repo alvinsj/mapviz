@@ -26,6 +26,7 @@ import {
 import useHoverFeature from './hooks/useHoverFeature'
 import ThemeControl from './ThemeControl'
 import useMultiPolygonLayer from './hooks/useMultiPolygonLayer'
+import useFeatureFlags, { Flag } from './hooks/useFeatureFlags'
 
 const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 
@@ -43,6 +44,17 @@ const createLayerLabels = (source: string, labelName: string): LayerProps => ({
 })
 
 const modifyColorWithTheme = (theme: Theme) => (color: string) => theme === 'dark' ? lighten(color, 0.3) : darken(color, 0.3)
+
+const BBOX_ZOOM = {
+  key: 'feat-bbox-zoom',
+  defaultValue: false
+}
+const getFeatureFlags = (flags: Flag<any>[]) => {
+  return Promise.resolve(flags.reduce((ret, flag) => {
+    ret[flag.key] = flag.defaultValue
+    return ret
+  }, {} as { [name: string]: any }))
+}
 
 function App() {
   const { mapStyle, mapRegions, onSwitchTheme, theme } = useBaseMap()
@@ -78,6 +90,8 @@ function App() {
     )
   }, [layer1, map1]))
 
+  const { [BBOX_ZOOM.key]: shouldEnableBboxZoom } = useFeatureFlags([BBOX_ZOOM], getFeatureFlags)
+
 
   return (
     <div className="App">
@@ -108,7 +122,7 @@ function App() {
             </Source>
           )}
 
-          {layer1 && (
+          {shouldEnableBboxZoom && layer1 && (
             <Source id="layer1BboxSource" type="geojson" data={layer1Bbox}>
               <Layer {...layerStyle({ theme, modifyColor: modifyColorWithTheme(theme) })} id="layer1Bbox" />
             </Source>
@@ -126,8 +140,6 @@ function App() {
               <Layer {...createLayerLabels('layer1', 'zone_name')} />
             </Source>
           )}
-
-
 
           {/* controls */}
           <FullscreenControl />
