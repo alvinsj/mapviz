@@ -13,6 +13,7 @@
     "@turf/bbox": "^6.5.0",
     "@turf/bbox-polygon": "^6.5.0",
     "color2k": "^2.0.0",
+    "lodash.flowright": "^3.5.0",
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "npm:empty-npm-package@1.0.0",
     "maplibre-gl": "^2.4.0",
@@ -21,6 +22,7 @@
     "react-map-gl": "^7.0.19"
   },
   "devDependencies": {
+    "@types/lodash.flowright": "^3.5.7",
     "@types/lodash.throttle": "^4.1.7",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
