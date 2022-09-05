@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useMap } from 'react-map-gl'
 
 export function useLayerClickHandler(
@@ -21,12 +21,12 @@ export function useLayerClickHandler(
   }, [map])
 
   return {
-    add: () => {
+    add: useCallback(() => {
       map?.on('click', layerId, onClick)
-    },
-    remove: () => {
+    }, []),
+    remove: useCallback(() => {
       map?.off('click', layerId, onClick)
-    },
+    }, []),
   }
 }
 

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import Map, {
   Source,
   Layer,
@@ -80,7 +80,7 @@ function App() {
     shouldEnableBboxZoom = getValue(BBOX_ZOOM)
 
   const { map1 } = useMap()
-  useLayerClickHandler('map1', 'layer1Bbox', useCallback(() => {
+  const { add, remove } = useLayerClickHandler('map1', 'layer1Bbox', useCallback(() => {
     if (!map1 || shouldEnableBboxZoom) return
 
     const [minLng, minLat, maxLng, maxLat] = bbox(layer1)
@@ -92,6 +92,11 @@ function App() {
       { padding: 40, duration: 1000 }
     )
   }, [layer1, map1, shouldEnableBboxZoom]))
+
+  useEffect(() => {
+    if (shouldEnableBboxZoom) add()
+    else remove()
+  }, [add, remove, shouldEnableBboxZoom])
 
   const onToggleBox = useCallback(() => {
     const cur = getValue(BBOX_ZOOM);
