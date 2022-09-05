@@ -3,6 +3,11 @@ export const BBOX_ZOOM = {
   defaultValue: false,
 }
 
-export const FLAGS = [BBOX_ZOOM]
+export const SHOW_REGIONS = {
+  key: 'feat-show-regions',
+  defaultValue: false,
+}
+
+export const FLAGS = [BBOX_ZOOM, SHOW_REGIONS]
 
 export default FLAGS

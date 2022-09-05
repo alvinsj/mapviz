@@ -16,6 +16,7 @@ export default compose(
     {
       name: 'RegionLayer',
       component: RegionLayer,
+      useControls: RegionLayer.useControls,
     },
     {
       name: 'CustomLayer',

@@ -11,6 +11,7 @@ export const useHoverFeature = (
 
   useEffect(() => {
     if (!map) return
+    if (!map.getLayer(layerName)) return
 
     const handleMouseMove = throttle((e) => {
       const features = map.queryRenderedFeatures(e.point, {

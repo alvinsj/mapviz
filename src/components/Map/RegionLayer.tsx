@@ -1,9 +1,13 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Source, Layer } from 'react-map-gl'
 
 import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
 import { useTheme } from '../../contexts/ThemeContext'
 import useHoverFeature from '../../hooks/useHoverFeature'
+import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
+import { SHOW_REGIONS } from '../../config/featureFlags'
+import { UseControlsProps } from './MapMediator'
+
 import { regionLayerStyle, highlightRegionLayerStyle } from './layerStyles'
 
 const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
@@ -20,7 +24,11 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
     [selectedRegion]
   )
 
+  const [getValue] = useFeatureFlagContext(),
+    shouldShowRegions = getValue(SHOW_REGIONS)
+
   return (
+    shouldShowRegions &&
     mapRegions && (
       <Source type="geojson" data={mapRegions}>
         <Layer {...regionLayerStyle({ theme })} id="regions" />
@@ -32,6 +40,21 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         />
       </Source>
     )
+  )
+}
+
+RegionLayer.useControls = (mapId: string, props: UseControlsProps) => {
+  const [getValue, replaceFlag] = useFeatureFlagContext()
+
+  const onToggleBox = useCallback(() => {
+    const cur = getValue(SHOW_REGIONS)
+    replaceFlag(SHOW_REGIONS, !cur)
+  }, [getValue, replaceFlag])
+
+  return (
+    <button {...props} type="button" onClick={() => onToggleBox()}>
+      Reg
+    </button>
   )
 }
 
