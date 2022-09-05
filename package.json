@@ -10,6 +10,9 @@
     "lint": "eslint src/App.tsx"
   },
   "dependencies": {
+    "@turf/bbox": "^6.5.0",
+    "@turf/bbox-polygon": "^6.5.0",
+    "color2k": "^2.0.0",
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "npm:empty-npm-package@1.0.0",
     "maplibre-gl": "^2.4.0",

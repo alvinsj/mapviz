@@ -1,16 +1,20 @@
-import { useMemo, useRef } from 'react'
+import { useCallback, useMemo } from 'react'
 import Map, {
   Source,
   Layer,
   FullscreenControl,
   NavigationControl,
   ScaleControl,
-  MapRef,
   LayerProps,
+  useMap,
 } from 'react-map-gl'
 import maplibreGl from 'maplibre-gl'
+import bbox from '@turf/bbox'
+import bboxPolygon from '@turf/bbox-polygon'
+import { lighten, darken } from 'color2k'
 
-import useBaseMap from './hooks/useBaseMap'
+import useBaseMap, { Theme } from './hooks/useBaseMap'
+import useLayerClickHandler from './hooks/useLayerClickHandler'
 
 import './App.css'
 import {
@@ -38,11 +42,12 @@ const createLayerLabels = (source: string, labelName: string): LayerProps => ({
   }
 })
 
+const modifyColorWithTheme = (theme: Theme) => (color: string) => theme === 'dark' ? lighten(color, 0.3) : darken(color, 0.3)
+
 function App() {
   const { mapStyle, mapRegions, onSwitchTheme, theme } = useBaseMap()
 
-  const mapRef = useRef<MapRef>()
-  const hoverFeature = useHoverFeature(mapRef, 'regions')
+  const hoverFeature = useHoverFeature('map1', 'regions')
   const selectedRegion = hoverFeature?.properties?.cell_id || ''
   const filter = useMemo(
     () => ['in', 'cell_id', selectedRegion],
@@ -50,18 +55,35 @@ function App() {
   )
 
   const { mapLayer: layer1 } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
-  const hoverLayerFeature = useHoverFeature(mapRef, 'layer1')
+  const hoverLayerFeature = useHoverFeature('map1', 'layer1')
   const selectedZoneName = hoverLayerFeature?.properties?.zone_name
   const filterHighlightLayer1 = useMemo(
     () => ['in', 'zone_name', selectedZoneName || ''],
     [selectedRegion]
   )
 
+  const layer1Bbox = bboxPolygon(bbox(layer1))
+
+  const { map1 } = useMap()
+  useLayerClickHandler('map1', 'layer1Bbox', useCallback(() => {
+    if (!map1) return
+
+    const [minLng, minLat, maxLng, maxLat] = bbox(layer1)
+    map1.getMap().fitBounds(
+      [
+        [minLng, minLat],
+        [maxLng, maxLat]
+      ],
+      { padding: 40, duration: 1000 }
+    )
+  }, [layer1, map1]))
+
+
   return (
     <div className="App">
       {mapStyle && (
         <Map
-          ref={mapRef}
+          id="map1"
           reuseMaps
           initialViewState={{
             longitude: 103.82358,
@@ -87,7 +109,13 @@ function App() {
           )}
 
           {layer1 && (
-            <Source type="geojson" data={layer1}>
+            <Source id="layer1BboxSource" type="geojson" data={layer1Bbox}>
+              <Layer {...layerStyle({ theme, modifyColor: modifyColorWithTheme(theme) })} id="layer1Bbox" />
+            </Source>
+          )}
+
+          {layer1 && (
+            <Source id="layer1Source" type="geojson" data={layer1}>
               <Layer {...layerStyle({ theme })} id="layer1" />
               <Layer
                 {...highlightLayerStyle({ theme })}
@@ -99,14 +127,16 @@ function App() {
             </Source>
           )}
 
+
+
           {/* controls */}
           <FullscreenControl />
           <NavigationControl />
           <ScaleControl />
           <ThemeControl>
             <div
-              className="maplibregl-ctrl 
-            maplibregl-ctrl-group mapboxgl-ctrl mapboxgl-ctrl-group"
+              className="maplibregl-ctrl maplibregl-ctrl-group 
+              mapboxgl-ctrl mapboxgl-ctrl-group"
             >
               <button type="button" onClick={() => onSwitchTheme('dark')}>
                 Dark

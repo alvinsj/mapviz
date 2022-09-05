@@ -1,21 +1,16 @@
 import { useEffect, useState, MutableRefObject } from 'react'
-import { MapRef, MapboxGeoJSONFeature } from 'react-map-gl'
+import { useMap, MapboxGeoJSONFeature } from 'react-map-gl'
 import throttle from 'lodash.throttle'
 
 export const useHoverFeature = (
-  mapRef: MutableRefObject<MapRef | undefined>,
+  mapId: string,
   layerName: string
 ): MapboxGeoJSONFeature | undefined => {
   const [feature, setFeature] = useState<MapboxGeoJSONFeature>()
+  const { [mapId]: map } = useMap()
 
   useEffect(() => {
-    if (
-      typeof mapRef.current === 'undefined' ||
-      typeof mapRef.current?.getMap() === 'undefined'
-    )
-      return
-
-    const map = mapRef.current?.getMap()
+    if (!map) return
 
     const handleMouseMove = throttle((e) => {
       const features = map.queryRenderedFeatures(e.point, {
@@ -32,7 +27,7 @@ export const useHoverFeature = (
       map.off('mousemove', handleMouseMove)
       return
     }
-  }, [mapRef])
+  }, [map])
 
   return feature
 }
