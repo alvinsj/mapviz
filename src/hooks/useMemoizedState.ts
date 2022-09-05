@@ -1,14 +1,20 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export function useMemoizedState<T>(value: T, key: string) {
   const memoized = localStorage.getItem(key),
     memoizedValue = memoized ? JSON.parse(memoized) : undefined
 
-  const [state, setState] = useState(
-    typeof value === 'undefined' ? memoizedValue : value
-  )
+  const [state, setState] = useState(memoizedValue ?? value)
+
+  // handle key change
+  useEffect(() => {
+    const memoized = localStorage.getItem(key),
+      memoizedValue = memoized ? JSON.parse(memoized) : undefined
+
+    setState(memoizedValue ?? value)
+  }, [key])
 
   return [
     state,

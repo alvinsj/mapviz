@@ -1,14 +1,17 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useMemoizedState } from './useMemoizedState'
 import { fetchTheme, fetchRegions } from '../apis'
 
 export type Theme = 'dark' | 'light'
 
 function useBaseMap() {
-  const [theme, setTheme] = useState<Theme>('light')
-  const [mapStyle, setMapStyle] = useMemoizedState(undefined, 'mapStyle')
+  const [theme, setTheme] = useMemoizedState('light', 'theme')
+  const [mapStyle, setMapStyle] = useMemoizedState(
+    undefined,
+    `mapStyle-${theme}`
+  )
   const [mapRegions, setMapRegions] = useMemoizedState(undefined, 'mapRegions')
-  const onSwitchTheme = useCallback((newTheme: Theme = 'dark') => {
+  const onSwitchTheme = useCallback((newTheme: Theme) => {
     setTheme(newTheme)
   }, [])
   useEffect(() => {
