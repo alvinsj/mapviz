@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { Source, Layer } from 'react-map-gl'
 
 import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
-import { useTheme } from '../../contexts/ThemeContext'
+import { useThemeContext } from '../../contexts/ThemeContext'
 import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 import { SHOW_REGIONS } from '../../config/featureFlags'
@@ -14,7 +14,7 @@ const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
 
 export type MapPluginComponentProps = { mapId: string }
 export function RegionLayer({ mapId }: MapPluginComponentProps) {
-  const [theme] = useTheme()
+  const [theme] = useThemeContext()
   const { mapLayer: mapRegions } = useMultiPolygonLayer(MAP_REGIONS_URL)
 
   const hoverFeature = useHoverFeature(mapId, 'regions')

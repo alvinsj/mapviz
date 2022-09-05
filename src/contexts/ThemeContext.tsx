@@ -26,6 +26,6 @@ export const provideTheme = (Base: ComponentType) =>
     )
   })
 
-export function useTheme() {
+export function useThemeContext() {
   return useContext(ThemeContext)
 }

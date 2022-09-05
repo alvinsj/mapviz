@@ -5,7 +5,7 @@ import bboxPolygon from '@turf/bbox-polygon'
 import { lighten, darken } from 'color2k'
 import { useMap, LayerProps } from 'react-map-gl'
 
-import { useTheme } from '../../contexts/ThemeContext'
+import { useThemeContext } from '../../contexts/ThemeContext'
 
 import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
 import useHoverFeature from '../../hooks/useHoverFeature'
@@ -39,7 +39,7 @@ const createLayerLabels = (source: string, labelName: string): LayerProps => ({
 })
 
 export function CustomLayer({ mapId }: MapPluginComponentProps) {
-  const [theme] = useTheme()
+  const [theme] = useThemeContext()
   const { mapLayer } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
   const hoverLayerFeature = useHoverFeature(mapId, LAYER_NAME)
   const selectedZoneName = hoverLayerFeature?.properties?.zone_name
