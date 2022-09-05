@@ -19,7 +19,8 @@ export function useMemoizedState<T>(value: T, key: string) {
         localStorage.setItem(key, JSON.stringify(newState))
         setState(newState)
       }
-    }, []),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []), // once
   ]
 }
 

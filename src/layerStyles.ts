@@ -1,5 +1,5 @@
 import { FillLayer } from 'react-map-gl'
-import { Theme } from './hooks/useBaseMap'
+import { Theme } from './types'
 
 export const regionLayerStyle = ({ theme }: { theme: Theme }): FillLayer =>
   ({

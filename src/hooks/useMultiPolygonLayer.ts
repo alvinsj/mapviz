@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useMemoizedState } from './useMemoizedState'
 
-function useMultiPolygonLayer(layerUrl) {
+function useMultiPolygonLayer(layerUrl: string) {
   const [mapLayer, setMapLayer] = useMemoizedState(undefined, layerUrl)
 
   useEffect(() => {
@@ -18,7 +18,8 @@ function useMultiPolygonLayer(layerUrl) {
       .then((data) => {
         setMapLayer(data)
       })
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // once
 
   return {
     mapLayer,

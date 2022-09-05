@@ -27,6 +27,7 @@ export const useHoverFeature = (
       map.off('mousemove', handleMouseMove)
       return
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map])
 
   return feature

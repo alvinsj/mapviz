@@ -1,16 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useMemoizedState } from './useMemoizedState'
+import { fetchTheme, fetchRegions } from '../apis'
 
-const DARK_MAP_STYLE_URL: string = import.meta.env.VITE_DARK_MAP_STYLE_URL
-const LIGHT_MAP_STYLE_URL: string = import.meta.env.VITE_LIGHT_MAP_STYLE_URL
-
-const THEME_URLS = {
-  dark: DARK_MAP_STYLE_URL,
-  light: LIGHT_MAP_STYLE_URL,
-}
 export type Theme = 'dark' | 'light'
-
-const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
 
 function useBaseMap() {
   const [theme, setTheme] = useState<Theme>('light')
@@ -22,7 +14,7 @@ function useBaseMap() {
   useEffect(() => {
     if (mapStyle) return // guard
 
-    fetch(THEME_URLS[theme])
+    fetchTheme(theme)
       .then((response) => response.json())
       .then((data) => {
         setMapStyle({
@@ -33,23 +25,19 @@ function useBaseMap() {
           pitch: 0,
         })
       })
-  }, [theme])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme]) // only theme change
 
   useEffect(() => {
     if (mapRegions) return // guard
 
-    const token = localStorage.getItem('token')?.toString()
-
-    const authHeaders = new Headers()
-    authHeaders.append('Accept', 'application/vnd.geo+json')
-    if (token) authHeaders.append('Authorization', `Bearer ${token}`)
-
-    fetch(MAP_REGIONS_URL, { headers: authHeaders })
+    fetchRegions()
       .then((response) => response.json())
       .then((data) => {
         setMapRegions(data)
       })
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // once
 
   return {
     mapStyle,
