@@ -19,6 +19,10 @@ export const useHoverFeature = (
 
       if (features instanceof Array && features.length > 0) {
         setFeature(features[0])
+
+        // FIXME wrong return type queryRenderedFeatures
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
       } else if (typeof features === 'object') setFeature(features)
     }, 100)
 
