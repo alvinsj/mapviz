@@ -9,7 +9,11 @@ export const useHoverFeature = (
   const [feature, setFeature] = useState<MapboxGeoJSONFeature>()
 
   useEffect(() => {
-    if (typeof mapRef.current === 'undefined') return
+    if (
+      typeof mapRef.current === 'undefined' ||
+      typeof mapRef.current?.getMap() === 'undefined'
+    )
+      return
 
     const map = mapRef.current?.getMap()
 

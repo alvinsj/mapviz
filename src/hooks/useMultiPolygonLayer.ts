@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useMemoizedState } from './useMemoizedState'
 
 function useMultiPolygonLayer(layerUrl) {
-  const [mapLayer, setMapLayer] = useState()
+  const [mapLayer, setMapLayer] = useMemoizedState(undefined, layerUrl)
 
   useEffect(() => {
+    if (mapLayer) return // guard
+
     const token = localStorage.getItem('token')?.toString()
 
     const authHeaders = new Headers()

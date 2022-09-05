@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useMemoizedState } from './useMemoizedState'
 
 const DARK_MAP_STYLE_URL: string = import.meta.env.VITE_DARK_MAP_STYLE_URL
 const LIGHT_MAP_STYLE_URL: string = import.meta.env.VITE_LIGHT_MAP_STYLE_URL
@@ -11,14 +12,16 @@ export type Theme = 'dark' | 'light'
 
 const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
 
-function useData() {
+function useBaseMap() {
   const [theme, setTheme] = useState<Theme>('light')
-  const [mapStyle, setMapStyle] = useState()
-  const [mapRegions, setMapRegions] = useState()
+  const [mapStyle, setMapStyle] = useMemoizedState(undefined, 'mapStyle')
+  const [mapRegions, setMapRegions] = useMemoizedState(undefined, 'mapRegions')
   const onSwitchTheme = useCallback((newTheme: Theme = 'dark') => {
     setTheme(newTheme)
   }, [])
   useEffect(() => {
+    if (mapStyle) return // guard
+
     fetch(THEME_URLS[theme])
       .then((response) => response.json())
       .then((data) => {
@@ -33,6 +36,8 @@ function useData() {
   }, [theme])
 
   useEffect(() => {
+    if (mapRegions) return // guard
+
     const token = localStorage.getItem('token')?.toString()
 
     const authHeaders = new Headers()
@@ -53,4 +58,4 @@ function useData() {
     theme,
   }
 }
-export default useData
+export default useBaseMap
