@@ -76,9 +76,12 @@ function App() {
 
   const layer1Bbox = bboxPolygon(bbox(layer1))
 
+  const { getValue, replaceFlag } = useFeatureFlags([BBOX_ZOOM], getFeatureFlags),
+    shouldEnableBboxZoom = getValue(BBOX_ZOOM)
+
   const { map1 } = useMap()
   useLayerClickHandler('map1', 'layer1Bbox', useCallback(() => {
-    if (!map1) return
+    if (!map1 || shouldEnableBboxZoom) return
 
     const [minLng, minLat, maxLng, maxLat] = bbox(layer1)
     map1.getMap().fitBounds(
@@ -88,10 +91,12 @@ function App() {
       ],
       { padding: 40, duration: 1000 }
     )
-  }, [layer1, map1]))
+  }, [layer1, map1, shouldEnableBboxZoom]))
 
-  const { [BBOX_ZOOM.key]: shouldEnableBboxZoom } = useFeatureFlags([BBOX_ZOOM], getFeatureFlags)
-
+  const onToggleBox = useCallback(() => {
+    const cur = getValue(BBOX_ZOOM);
+    replaceFlag(BBOX_ZOOM, !cur)
+  }, [getValue, replaceFlag])
 
   return (
     <div className="App">
@@ -155,6 +160,9 @@ function App() {
               </button>
               <button type="button" onClick={() => onSwitchTheme('light')}>
                 Light
+              </button>
+              <button type="button" onClick={() => onToggleBox()}>
+                Box
               </button>
             </div>
           </ThemeControl>

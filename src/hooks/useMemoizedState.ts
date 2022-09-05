@@ -6,9 +6,6 @@ export function useMemoizedState<T>(value: T, key: string) {
   const memoized = localStorage.getItem(key),
     memoizedValue = memoized ? JSON.parse(memoized) : undefined
 
-  if (memoizedValue)
-    console.debug('[hook] using memoized state', key, '=', typeof memoizedValue)
-
   const [state, setState] = useState(
     typeof value === 'undefined' ? memoizedValue : value
   )

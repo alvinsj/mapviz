@@ -11,7 +11,6 @@ export function useLayerClickHandler(
   useEffect(() => {
     if (!map) return
 
-    console.log('mapRef.current', map)
     map.on('click', layerId, onClick)
 
     const copy = map
@@ -20,6 +19,15 @@ export function useLayerClickHandler(
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map])
+
+  return {
+    add: () => {
+      map?.on('click', layerId, onClick)
+    },
+    remove: () => {
+      map?.off('click', layerId, onClick)
+    },
+  }
 }
 
 export default useLayerClickHandler
