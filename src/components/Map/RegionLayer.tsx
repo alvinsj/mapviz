@@ -28,18 +28,25 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
     shouldShowRegions = getValue(SHOW_REGIONS)
 
   return (
-    shouldShowRegions &&
-    mapRegions && (
-      <Source type="geojson" data={mapRegions}>
-        <Layer {...regionLayerStyle({ theme })} id="regions" />
-        <Layer
-          {...highlightRegionLayerStyle({ theme })}
-          source="regions"
-          id="region-highlighted"
-          filter={filter}
-        />
-      </Source>
-    )
+    <Source type="geojson" data={mapRegions}>
+      <Layer
+        {...regionLayerStyle({ theme })}
+        id="regions"
+        layout={{
+          // FIXME layer is added before flag is on
+          visibility: shouldShowRegions && mapRegions ? 'visible' : 'none',
+        }}
+      />
+      <Layer
+        {...highlightRegionLayerStyle({ theme })}
+        source="regions"
+        id="region-highlighted"
+        filter={filter}
+        layout={{
+          visibility: shouldShowRegions && mapRegions ? 'visible' : 'none',
+        }}
+      />
+    </Source>
   )
 }
 

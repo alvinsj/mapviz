@@ -1,4 +1,4 @@
-import { useEffect, useState, MutableRefObject } from 'react'
+import { useEffect, useState } from 'react'
 import { useMap, MapboxGeoJSONFeature } from 'react-map-gl'
 import throttle from 'lodash.throttle'
 
@@ -33,7 +33,7 @@ export const useHoverFeature = (
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map])
+  }, [map, map?.getLayer(layerName)])
 
   return feature
 }
