@@ -95,7 +95,7 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
             [minLng, minLat],
             [maxLng, maxLat],
           ],
-          { padding: 40, duration: 1000 }
+          { padding: 0, duration: 1000 }
         )
       },
       [map, mapLayerData, shouldEnableBboxZoom]

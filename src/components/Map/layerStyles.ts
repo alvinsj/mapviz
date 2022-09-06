@@ -48,6 +48,6 @@ export const highlightLayerStyle = ({ theme }: { theme: Theme }): FillLayer =>
     type: 'fill',
     paint: {
       'fill-color': theme === 'dark' ? 'cyan' : 'blue',
-      'fill-opacity': 0.8,
+      'fill-opacity': 0.32,
     },
   } as FillLayer)
