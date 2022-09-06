@@ -6,7 +6,7 @@ import ReactMapGl, {
 } from 'react-map-gl'
 import maplibreGl from 'maplibre-gl'
 
-import MapMediator from './MapMediator'
+import MapMediator from './MapPluginMediator'
 import CustomControls from '../CustomControls'
 import useBaseMap from '../../hooks/useBaseMap'
 

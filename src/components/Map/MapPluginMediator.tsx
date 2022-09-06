@@ -8,7 +8,9 @@ export type UseControlsProps = {
 export type Plugin = {
   name: string
   component: ComponentType<{ mapId: string }>
-  useControls?: (mapId: string, props: UseControlsProps) => ReactNode
+  hooks?: {
+    useControls?: (mapId: string, props: UseControlsProps) => ReactNode
+  }
 }
 
 export const addMapPlugins =
@@ -53,9 +55,9 @@ export class MapMediator {
   renderCustomControls(mapId: string) {
     const c = this._plugins
       .map((p) => {
-        const control =
-          p.useControls &&
-          p.useControls(mapId, { key: `customControls-${p.name}` })
+        const control = p?.hooks?.useControls?.(mapId, {
+          key: `customControls-${p.name}`,
+        })
         return control
       })
       .filter((c) => c)

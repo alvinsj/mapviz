@@ -3,11 +3,15 @@ import compose from 'lodash.flowright'
 import { provideTheme } from '../../contexts/ThemeContext'
 import { provideFeatureFlags } from '../../contexts/FeatureFlagContext'
 
-import RegionLayer from './RegionLayer'
-import CustomLayer from './CustomLayer'
+import RegionLayer, {
+  useControls as useRegionLayerControls,
+} from './RegionLayer'
+import CustomLayer, {
+  useControls as useCustomLayerControls,
+} from './CustomLayer'
 
 import Map from './Map'
-import { addMapPlugins } from './MapMediator'
+import { addMapPlugins } from './MapPluginMediator'
 
 export default compose(
   provideFeatureFlags,
@@ -16,12 +20,16 @@ export default compose(
     {
       name: 'RegionLayer',
       component: RegionLayer,
-      useControls: RegionLayer.useControls,
+      hooks: {
+        useControls: useRegionLayerControls,
+      },
     },
     {
       name: 'CustomLayer',
       component: CustomLayer,
-      useControls: CustomLayer.useControls,
+      hooks: {
+        useControls: useCustomLayerControls,
+      },
     }
   )
 )(Map)

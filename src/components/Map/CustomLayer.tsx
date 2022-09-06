@@ -13,7 +13,7 @@ import useLayerClickHandler from '../../hooks/useLayerClickHandler'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 
 import { layerStyle, highlightLayerStyle } from './layerStyles'
-import { UseControlsProps } from './MapMediator'
+import { UseControlsProps } from './MapPluginMediator'
 
 import { MapPluginComponentProps } from '../types'
 import { Theme } from '../../types'
@@ -107,7 +107,7 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
   )
 }
 
-CustomLayer.useControls = (mapId: string, props: UseControlsProps) => {
+export const useControls = (mapId: string, props: UseControlsProps) => {
   const [getValue, replaceFlag] = useFeatureFlagContext()
 
   const onToggleBox = useCallback(() => {
