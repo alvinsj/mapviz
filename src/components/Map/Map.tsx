@@ -52,7 +52,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
               mapboxgl-ctrl mapboxgl-ctrl-group"
             >
               {renderBaseControls()}
-              {pluginMediator.useCustomControls(id)}
+              {pluginMediator.renderCustomControls(id)}
             </div>
           </CustomControls>
         </ReactMapGl>

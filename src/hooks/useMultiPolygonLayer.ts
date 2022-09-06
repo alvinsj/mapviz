@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useMemoizedState } from './useMemoizedState'
 import { MapboxGeoJSONFeature } from 'react-map-gl'
 
 function useMultiPolygonLayer(layerUrl: string): {
-  mapLayerData: MapboxGeoJSONFeature | undefined
+  mapLayerData?: MapboxGeoJSONFeature
+  error?: string
 } {
   const [mapLayerData, setMapLayerData] = useMemoizedState(undefined, layerUrl)
   const [error, setError] = useState()

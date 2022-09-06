@@ -8,26 +8,28 @@ export function useMemoizedState<T>(value: T, key: string) {
 
   const [state, setState] = useState(memoizedValue ?? value)
 
-  // handle key change
-  useEffect(() => {
-    const memoized = localStorage.getItem(key),
-      memoizedValue = memoized ? JSON.parse(memoized) : undefined
-
-    setState(memoizedValue ?? value)
-  }, [key])
-
-  return [
-    state,
-    useCallback((newState: T) => {
+  const setNewState = useCallback(
+    (newState: T) => {
       if (typeof newState === 'function') setState(newState(state))
       // never unset
       else if (newState) {
         localStorage.setItem(key, JSON.stringify(newState))
         setState(newState)
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []), // once
-  ]
+      } else setState(undefined)
+    },
+    [key, state]
+  ) // once
+
+  console.log(key)
+  // handle key change
+  useEffect(() => {
+    const memoized = localStorage.getItem(key),
+      memoizedValue = memoized ? JSON.parse(memoized) : undefined
+
+    setNewState(memoizedValue ?? value)
+  }, [key])
+
+  return [state, setNewState]
 }
 
 export default useMemoizedState

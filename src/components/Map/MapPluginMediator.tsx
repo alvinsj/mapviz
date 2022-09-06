@@ -1,18 +1,11 @@
-import { ComponentType, ReactNode, useMemo } from 'react'
+import { ComponentType, useMemo } from 'react'
 import { MapProps } from 'react-map-gl'
-
-export type useCustomControlsProps = {
-  key: string
-}
 
 export type Plugin = {
   name: string
   component: ComponentType<{ mapId: string }>
   hooks?: {
-    useCustomControls?: (
-      mapId: string,
-      props: useCustomControlsProps
-    ) => ReactNode
+    customControls?: ComponentType<{ mapId: string }>
   }
 }
 
@@ -48,14 +41,13 @@ export class MapMediator {
   }
 
   // returns rendered result from hooks
-  useCustomControls(mapId: string) {
+  renderCustomControls(mapId: string) {
     const controls = this._plugins
       .map((p) => {
         // NOTE need to maintain hooks here
-        const control = p?.hooks?.useCustomControls?.(mapId, {
-          key: `customControls-${p.name}`,
-        })
-        return control
+        const Controls = p?.hooks?.customControls
+
+        if (Controls) return <Controls key={p.name} mapId={mapId} />
       })
       .filter((c) => Boolean(c))
 

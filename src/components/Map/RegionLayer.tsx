@@ -6,7 +6,6 @@ import { useThemeContext } from '../../contexts/ThemeContext'
 import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 import { SHOW_REGIONS } from '../../config/featureFlags'
-import { useCustomControlsProps } from './MapPluginMediator'
 
 import { regionLayerStyle, highlightRegionLayerStyle } from './layerStyles'
 
@@ -51,10 +50,7 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
   )
 }
 
-export const useCustomControls = (
-  mapId: string,
-  props: useCustomControlsProps
-) => {
+export const CustomControls = () => {
   const [getValue, replaceFlag] = useFeatureFlagContext()
 
   const onToggleBox = useCallback(() => {
@@ -64,7 +60,6 @@ export const useCustomControls = (
 
   return (
     <button
-      {...props}
       style={{
         backgroundColor: getValue(SHOW_REGIONS) ? 'lightcyan' : 'lightgray',
       }}

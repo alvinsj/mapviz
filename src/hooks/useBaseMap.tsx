@@ -14,12 +14,13 @@ function useBaseMap() {
   )
   const [error, setError] = useState()
 
-  const onSwitchTheme = useCallback((newTheme: Theme) => {
-    setTheme(newTheme)
-  }, [])
+  const onSwitchTheme = useCallback(
+    (newTheme: Theme) => {
+      setTheme(newTheme)
+    },
+    [setTheme]
+  )
   useEffect(() => {
-    if (mapStyle) return // guard
-
     fetchTheme(theme)
       .then((response) => response.json())
       .then((data) => {

@@ -4,10 +4,10 @@ import { provideTheme } from '../../contexts/ThemeContext'
 import { provideFeatureFlags } from '../../contexts/FeatureFlagContext'
 
 import RegionLayer, {
-  useCustomControls as useRegionLayerControls,
+  CustomControls as RegionLayerControls,
 } from './RegionLayer'
 import CustomLayer, {
-  useCustomControls as useCustomLayerControls,
+  CustomControls as CustomLayerControls,
 } from './CustomLayer'
 
 import Map from './Map'
@@ -21,14 +21,14 @@ export default compose(
       name: 'RegionLayer',
       component: RegionLayer,
       hooks: {
-        useCustomControls: useRegionLayerControls,
+        customControls: RegionLayerControls,
       },
     },
     {
       name: 'CustomLayer',
       component: CustomLayer,
       hooks: {
-        useCustomControls: useCustomLayerControls,
+        customControls: CustomLayerControls,
       },
     }
   )

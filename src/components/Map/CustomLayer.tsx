@@ -14,7 +14,6 @@ import useLayerClickHandler from '../../hooks/useLayerClickHandler'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 
 import { layerStyle, highlightLayerStyle } from './layerStyles'
-import { useCustomControlsProps } from './MapPluginMediator'
 
 import { MapPluginComponentProps } from '../types'
 import { Theme } from '../../types'
@@ -147,10 +146,7 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
   )
 }
 
-export const useCustomControls = (
-  mapId: string,
-  props: useCustomControlsProps
-) => {
+export const CustomControls = () => {
   const [getValue, replaceFlag] = useFeatureFlagContext()
 
   const onToggleBox = useCallback(() => {
@@ -160,7 +156,6 @@ export const useCustomControls = (
 
   return (
     <button
-      {...props}
       style={{
         backgroundColor: getValue(BBOX_ZOOM) ? 'lightcyan' : 'lightgray',
       }}
