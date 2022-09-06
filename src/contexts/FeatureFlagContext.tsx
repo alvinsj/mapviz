@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentType, createContext, memo, useContext } from 'react'
+import { ComponentType, createContext, memo, useContext, useMemo } from 'react'
 import useFeatureFlags, {
   Flag,
   GetFlag,
@@ -27,8 +27,12 @@ export const provideFeatureFlags = (Base: ComponentType) =>
   memo(function WithTheme(props) {
     const { getValue, replaceFlag } = useFeatureFlags(FLAGS, getFeatureFlags)
 
+    const context = useMemo<[(f: Flag<any>) => any, SetFlag]>(
+      () => [getValue, replaceFlag],
+      [getValue, replaceFlag]
+    )
     return (
-      <FeatureFlagContext.Provider value={[getValue, replaceFlag]}>
+      <FeatureFlagContext.Provider value={context}>
         <Base {...props} />
       </FeatureFlagContext.Provider>
     )
