@@ -12,6 +12,7 @@
   "dependencies": {
     "@turf/bbox": "^6.5.0",
     "@turf/bbox-polygon": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
     "color2k": "^2.0.0",
     "lodash.flowright": "^3.5.0",
     "lodash.throttle": "^4.1.1",
