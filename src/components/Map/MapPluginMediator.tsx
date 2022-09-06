@@ -17,7 +17,7 @@ export const addMapPlugins =
   (...plugins: Plugin[]) =>
   (
     Base: ComponentType<
-      MapProps & { id: string; reuseMaps: true; mediator: MapMediator }
+      MapProps & { id: string; reuseMaps: true; pluginMediator: MapMediator }
     >
   ) => {
     // one instance per addMapPlugins's call
@@ -30,7 +30,7 @@ export const addMapPlugins =
         throw new Error('id and reuseMaps are required props to use Map plugin')
 
       return (
-        <Base {...props} mediator={mapMediator}>
+        <Base {...props} pluginMediator={mapMediator}>
           {mapMediator.renderMapChildren(props.id)}
           {props.children}
         </Base>

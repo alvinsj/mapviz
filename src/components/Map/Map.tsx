@@ -13,10 +13,10 @@ import useBaseMap from '../../hooks/useBaseMap'
 export type Props = {
   id: string
   children: ReactNode
-  mediator: MapMediator
+  pluginMediator: MapMediator
 }
 
-function Map({ id, children, mediator }: Props) {
+function Map({ id, children, pluginMediator }: Props) {
   const { mapStyle, onSwitchTheme } = useBaseMap()
 
   return (
@@ -54,7 +54,7 @@ function Map({ id, children, mediator }: Props) {
                 Light
               </button>
 
-              {mediator.renderCustomControls(id)}
+              {pluginMediator.renderCustomControls(id)}
             </div>
           </CustomControls>
         </ReactMapGl>
