@@ -20,7 +20,6 @@ export function useMemoizedState<T>(value: T, key: string) {
     [key, state]
   ) // once
 
-  console.log(key)
   // handle key change
   useEffect(() => {
     const memoized = localStorage.getItem(key),
