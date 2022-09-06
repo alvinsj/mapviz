@@ -43,11 +43,24 @@ function useBaseMap() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // once
 
+  const renderBaseControls = useCallback(() => {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => onSwitchTheme(theme === 'dark' ? 'light' : 'dark')}
+        >
+          {theme === 'dark' ? 'Light' : 'Dark'}
+        </button>
+      </>
+    )
+  }, [onSwitchTheme, theme])
+
   return {
     mapStyle,
     mapRegions,
-    onSwitchTheme,
     theme,
+    renderBaseControls,
   }
 }
 export default useBaseMap
