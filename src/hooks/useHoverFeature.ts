@@ -6,7 +6,7 @@ export const useHoverFeature = (
   mapId: string,
   layerName: string,
   opts?: { eventType: 'mousemove' | 'mouseenter' }
-): MapboxGeoJSONFeature | undefined => {
+): { feature: MapboxGeoJSONFeature | undefined } => {
   const [feature, setFeature] = useState<MapboxGeoJSONFeature>()
   const { [mapId]: map } = useMap()
 
@@ -38,7 +38,7 @@ export const useHoverFeature = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map])
 
-  return feature
+  return { feature }
 }
 
 export default useHoverFeature

@@ -10,7 +10,6 @@ import { useThemeContext } from '../../contexts/ThemeContext'
 
 import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
 import useHoverFeature from '../../hooks/useHoverFeature'
-import useLayerClickHandler from '../../hooks/useLayerClickHandler'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 
 import { layerStyle, highlightLayerStyle } from './layerStyles'
@@ -18,6 +17,7 @@ import { layerStyle, highlightLayerStyle } from './layerStyles'
 import { MapPluginComponentProps } from '../types'
 import { Theme } from '../../types'
 import { BBOX_ZOOM } from '../../config/featureFlags'
+import { useClickFeature } from '../../hooks/useClickFeature'
 
 const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 const LAYER_NAME = 'layer2'
@@ -57,64 +57,65 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
   const { mapLayerData } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
 
   // hover layer
-  const hoverLayerFeature = useHoverFeature(mapId, LAYER_NAME)
-  const selectedZoneName = hoverLayerFeature?.properties?.[FEAT_PROPERTY_NAME]
+  const { feature: hoverLayerFeature } = useHoverFeature(mapId, LAYER_NAME)
+  const hoverZoneName = hoverLayerFeature?.properties?.[FEAT_PROPERTY_NAME]
   const filterHighlightLayer = useMemo(
-    () => ['in', FEAT_PROPERTY_NAME, selectedZoneName || ''],
-    [selectedZoneName]
+    () => ['in', FEAT_PROPERTY_NAME, hoverZoneName || ''],
+    [hoverZoneName]
   )
 
   /// hover zoombox
-  const hoverZoomBoxFeature = useHoverFeature(mapId, 'zoomBox', {
+  const { feature: hoverZoomBoxFeature } = useHoverFeature(mapId, 'zoomBox', {
     eventType: 'mouseenter',
   })
-  const selectedZoomBoxName = hoverZoomBoxFeature?.properties?.id
+  const hoverZoomBoxName = hoverZoomBoxFeature?.properties?.id
   const filterZoomBoxLayer = useMemo(
-    () => ['in', 'id', selectedZoneName || ''],
-    [selectedZoomBoxName]
+    () => ['in', 'id', hoverZoomBoxName || ''],
+    [hoverZoomBoxName]
   )
-
-  const zoomBoxData =
-    mapLayerData && makeBboxes(mapLayerData as MapboxGeoJSONFeature)
 
   const [getValue] = useFeatureFlagContext(),
-    shouldEnableBboxZoom = getValue(BBOX_ZOOM)
+    flagEnableBboxZoom = getValue(BBOX_ZOOM)
+
+  const zoomBoxData =
+    mapLayerData && flagEnableBboxZoom
+      ? makeBboxes(mapLayerData as MapboxGeoJSONFeature)
+      : undefined
 
   const { [mapId]: map } = useMap()
-  const { add, remove } = useLayerClickHandler(
-    mapId,
-    'zoomBox',
-    useCallback(
-      (ev) => {
-        if (!zoomBoxData || !shouldEnableBboxZoom || !ev.features) return
 
-        const [minLng, minLat, maxLng, maxLat] = bbox(ev.features[0])
-        map?.fitBounds(
-          [
-            [minLng, minLat],
-            [maxLng, maxLat],
-          ],
-          { padding: 0, duration: 1000 }
-        )
-      },
-      [map, mapLayerData, shouldEnableBboxZoom]
-    )
+  const handleClick = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (ev: any, feature?: MapboxGeoJSONFeature) => {
+      if (!zoomBoxData || !flagEnableBboxZoom || !feature) return
+
+      const [minLng, minLat, maxLng, maxLat] = bbox(feature)
+      map?.fitBounds(
+        [
+          [minLng, minLat],
+          [maxLng, maxLat],
+        ],
+        { padding: 0, duration: 1000 }
+      )
+    },
+    [map, flagEnableBboxZoom, zoomBoxData]
   )
+  const { add, remove } = useClickFeature(mapId, 'zoomBox')
 
   useEffect(() => {
-    if (shouldEnableBboxZoom) add()
-    else remove()
+    if (flagEnableBboxZoom) add(handleClick)
+    else remove(handleClick)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldEnableBboxZoom]) // only when feature is on
+  }, [flagEnableBboxZoom]) // only when feature is on
 
   return (
     <>
-      {shouldEnableBboxZoom && zoomBoxData && (
+      {flagEnableBboxZoom && (
         <Source id="zoomBoxSource" type="geojson" data={zoomBoxData}>
           <Layer
             {...layerStyle({
               theme,
-              modifyColor: selectedZoomBoxName ? undimColor : dimColor,
+              modifyColor: hoverZoomBoxName ? undimColor : dimColor,
             })}
             id="zoomBox"
           />

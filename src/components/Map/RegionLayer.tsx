@@ -17,11 +17,11 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
   const { mapLayerData } = useMultiPolygonLayer(MAP_REGIONS_URL)
 
-  const hoverFeature = useHoverFeature(mapId, 'regions')
-  const selectedRegion = hoverFeature?.properties?.[FEAT_PROPERTY_NAME] || ''
+  const { feature: hoverRegion } = useHoverFeature(mapId, 'regions')
+  const hoverRegionName = hoverRegion?.properties?.[FEAT_PROPERTY_NAME] || ''
   const filter = useMemo(
-    () => ['in', FEAT_PROPERTY_NAME, selectedRegion],
-    [selectedRegion]
+    () => ['in', FEAT_PROPERTY_NAME, hoverRegionName],
+    [hoverRegionName]
   )
 
   const [getValue] = useFeatureFlagContext(),
