@@ -1,6 +1,7 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
 import { useMemoizedState } from './useMemoizedState'
-import { fetchTheme, fetchRegions } from '../apis'
+import { fetchTheme } from '../apis'
 import { useThemeContext } from '../contexts/ThemeContext'
 
 export type Theme = 'dark' | 'light'
@@ -11,7 +12,8 @@ function useBaseMap() {
     undefined,
     `mapStyle-${theme}`
   )
-  const [mapRegions, setMapRegions] = useMemoizedState(undefined, 'mapRegions')
+  const [error, setError] = useState()
+
   const onSwitchTheme = useCallback((newTheme: Theme) => {
     setTheme(newTheme)
   }, [])
@@ -21,27 +23,20 @@ function useBaseMap() {
     fetchTheme(theme)
       .then((response) => response.json())
       .then((data) => {
-        setMapStyle({
-          ...data,
-          center: [1.367786, 103.823583],
-          zoom: 5.0,
-          bearing: 0,
-          pitch: 0,
-        })
+        if (data.version && data.layers) {
+          setMapStyle({
+            ...data,
+            center: [1.367786, 103.823583],
+            zoom: 5.0,
+            bearing: 0,
+            pitch: 0,
+          })
+          setError(undefined)
+        } else throw new Error('style.json is invalid')
       })
+      .catch((e) => setError(e.message))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]) // only theme change
-
-  useEffect(() => {
-    if (mapRegions) return // guard
-
-    fetchRegions()
-      .then((response) => response.json())
-      .then((data) => {
-        setMapRegions(data)
-      })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // once
 
   const renderBaseControls = useCallback(() => {
     return (
@@ -58,9 +53,9 @@ function useBaseMap() {
 
   return {
     mapStyle,
-    mapRegions,
     theme,
     renderBaseControls,
+    error,
   }
 }
 export default useBaseMap
