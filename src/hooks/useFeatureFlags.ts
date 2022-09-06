@@ -13,7 +13,8 @@ export type GetFlag = (f: Flag<FlagValue>) => FlagValue | undefined
 
 export type UseFeatureFlagsOpts = {
   setFlag: SetFlag
-  onError: (e: FlagValue) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onError: (e: any) => void // FIXME specify error type
 }
 
 export function useFeatureFlags(

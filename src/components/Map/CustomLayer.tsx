@@ -4,7 +4,7 @@ import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
 import { lighten, darken, transparentize } from 'color2k'
 import { useMap, LayerProps, MapboxGeoJSONFeature } from 'react-map-gl'
-import { FeatureCollection, Feature, featureCollection } from '@turf/helpers'
+import { Feature, featureCollection } from '@turf/helpers'
 
 import { useThemeContext } from '../../contexts/ThemeContext'
 
@@ -24,7 +24,7 @@ const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 const LAYER_NAME = 'layer2'
 const FEAT_PROPERTY_NAME = 'Unique ID'
 
-const dimColor = (color: string) => transparentize(color)
+const dimColor = (color: string) => transparentize(color, 1)
 const undimColor = (color: string) => transparentize(color, 0)
 
 const modifyColorWithTheme = (theme: Theme) => (color: string) =>

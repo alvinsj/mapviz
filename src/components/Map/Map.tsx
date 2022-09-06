@@ -15,7 +15,7 @@ export type Props = {
   id: string
   children: ReactNode
   pluginMediator: MapMediator
-} & Partial<MapProps>
+}
 
 function Map({ id, children, pluginMediator, ...mapProps }: Props) {
   const { mapStyle, renderBaseControls } = useBaseMap()
@@ -49,7 +49,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
               className="maplibregl-ctrl maplibregl-ctrl-group 
               mapboxgl-ctrl mapboxgl-ctrl-group"
             >
-              {renderBaseControls(id)}
+              {renderBaseControls()}
               {pluginMediator.useCustomControls(id)}
             </div>
           </CustomControls>
