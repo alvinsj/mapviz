@@ -24,7 +24,9 @@ const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 const LAYER_NAME = 'layer2'
 const FEAT_PROPERTY_NAME = 'Unique ID'
 
-const dimColor = (color: string) => transparentize(color)
+const dimColor = (color: string) => transparentize(color, 0.9)
+const undimColor = (color: string) => transparentize(color, 0)
+
 const modifyColorWithTheme = (theme: Theme) => (color: string) =>
   theme === 'dark' ? lighten(color, 0.3) : darken(color, 0.3)
 
@@ -110,9 +112,7 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
           <Layer
             {...layerStyle({
               theme,
-              modifyColor: selectedZoomBoxName
-                ? modifyColorWithTheme(theme)
-                : dimColor,
+              modifyColor: selectedZoomBoxName ? undimColor : dimColor,
             })}
             id="zoomBox"
           />

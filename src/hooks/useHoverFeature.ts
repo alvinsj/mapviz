@@ -26,10 +26,10 @@ export const useHoverFeature = (
       } else if (typeof features === 'object') setFeature(features)
     }, 100)
 
-    map.on('mousemove', layerName, handleMouseMove)
-    map.on('mouseleave', layerName, () => setFeature(undefined))
+    map.on('mouseover', layerName, handleMouseMove)
+    map.on('mouseout', layerName, () => setFeature(undefined))
     return () => {
-      map.off('mousemove', layerName, handleMouseMove)
+      map.off('mouseover', layerName, handleMouseMove)
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
