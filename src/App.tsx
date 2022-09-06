@@ -5,6 +5,7 @@ import './App.css'
 function App() {
   return (
     <div
+      className="App"
       style={{
         width: '100vw',
         display: 'flex',

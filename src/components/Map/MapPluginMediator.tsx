@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from 'react'
+import { ComponentType, ReactNode, useMemo } from 'react'
 import { MapProps } from 'react-map-gl'
 
 export type useCustomControlsProps = {
@@ -19,33 +19,22 @@ export type Plugin = {
 export const addMapPlugins =
   (...plugins: Plugin[]) =>
   (
-    Base: ComponentType<
-      MapProps & { id: string; reuseMaps: true; pluginMediator: MapMediator }
-    >
-  ) => {
-    // one instance per addMapPlugins's call
-    const mapMediator = new MapMediator(plugins)
+    Base: ComponentType<MapProps & { id: string; pluginMediator: MapMediator }>
+  ) =>
+    function MapWithPlugins(props: MapProps & { id: string }) {
+      if (!props.id) throw new Error('id is required props to use Map plugin')
+      const mapMediator = useMemo(() => new MapMediator(plugins, props.id), [])
 
-    return function MapWithPlugins(
-      props: MapProps & { id: string; reuseMaps: true }
-    ) {
-      if (!props.id || !props.reuseMaps)
-        throw new Error('id and reuseMaps are required props to use Map plugin')
-
-      return (
-        <Base {...props} pluginMediator={mapMediator}>
-          {mapMediator.renderMapChildren(props.id)}
-          {props.children}
-        </Base>
-      )
+      return <Base {...props} pluginMediator={mapMediator} />
     }
-  }
 
 export class MapMediator {
   _plugins: Plugin[]
+  _id: string
 
-  constructor(plugins: Plugin[]) {
+  constructor(plugins: Plugin[], id: string) {
     this._plugins = plugins
+    this._id = id
   }
 
   // returns rendered children

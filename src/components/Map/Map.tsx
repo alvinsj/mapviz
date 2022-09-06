@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 import ReactMapGl, {
   FullscreenControl,
-  MapProps,
   NavigationControl,
   ScaleControl,
 } from 'react-map-gl'
@@ -18,10 +17,11 @@ export type Props = {
 }
 
 function Map({ id, children, pluginMediator, ...mapProps }: Props) {
-  const { mapStyle, renderBaseControls } = useBaseMap()
+  const { mapStyle, renderBaseControls, error } = useBaseMap()
 
   return (
-    <div className="App">
+    <>
+      <i>{error}</i>
       {mapStyle && (
         <ReactMapGl
           id={id}
@@ -38,6 +38,8 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
           maxBounds={[103.58, 1.16, 104.1, 1.5]}
           {...mapProps}
         >
+          {pluginMediator.renderMapChildren(id)}
+
           {children}
 
           {/* controls */}
@@ -55,7 +57,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
           </CustomControls>
         </ReactMapGl>
       )}
-    </div>
+    </>
   )
 }
 
