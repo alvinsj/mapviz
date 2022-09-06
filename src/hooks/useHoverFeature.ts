@@ -4,7 +4,8 @@ import throttle from 'lodash.throttle'
 
 export const useHoverFeature = (
   mapId: string,
-  layerName: string
+  layerName: string,
+  opts?: { eventType: 'mousemove' | 'mouseenter' }
 ): MapboxGeoJSONFeature | undefined => {
   const [feature, setFeature] = useState<MapboxGeoJSONFeature>()
   const { [mapId]: map } = useMap()
@@ -26,14 +27,12 @@ export const useHoverFeature = (
       } else if (typeof features === 'object') setFeature(features)
     }, 100)
 
-    map.on('mousemove', layerName, handleMouseMove)
-    map.on(
-      'mouseleave',
-      layerName,
-      throttle(() => setFeature(undefined), 100)
-    )
+    // NOTE mousemove works better on fast hover
+    const { eventType = 'mousemove' } = opts || {}
+    map.on(eventType, layerName, handleMouseMove)
+    map.on('mouseleave', layerName, () => setFeature(undefined))
     return () => {
-      map.off('mousemove', layerName, handleMouseMove)
+      map.off(eventType, layerName, handleMouseMove)
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

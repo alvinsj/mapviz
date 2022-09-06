@@ -24,7 +24,7 @@ const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 const LAYER_NAME = 'layer2'
 const FEAT_PROPERTY_NAME = 'Unique ID'
 
-const dimColor = (color: string) => transparentize(color, 0.9)
+const dimColor = (color: string) => transparentize(color)
 const undimColor = (color: string) => transparentize(color, 0)
 
 const modifyColorWithTheme = (theme: Theme) => (color: string) =>
@@ -66,7 +66,9 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
   )
 
   /// hover zoombox
-  const hoverZoomBoxFeature = useHoverFeature(mapId, 'zoomBox')
+  const hoverZoomBoxFeature = useHoverFeature(mapId, 'zoomBox', {
+    eventType: 'mouseenter',
+  })
   const selectedZoomBoxName = hoverZoomBoxFeature?.properties?.id
   const filterZoomBoxLayer = useMemo(
     () => ['in', 'id', selectedZoneName || ''],
