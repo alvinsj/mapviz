@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Source, Layer } from 'react-map-gl'
 
 import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
@@ -17,7 +17,11 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
   const { mapLayerData } = useMultiPolygonLayer(MAP_REGIONS_URL)
 
-  const { feature: hoverRegion } = useHoverFeature(mapId, 'regions')
+  const {
+    feature: hoverRegion,
+    add,
+    remove,
+  } = useHoverFeature(mapId, 'regions')
   const hoverRegionName = hoverRegion?.properties?.[FEAT_PROPERTY_NAME] || ''
   const filter = useMemo(
     () => ['in', FEAT_PROPERTY_NAME, hoverRegionName],
@@ -25,7 +29,12 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
   )
 
   const [getValue] = useFeatureFlagContext(),
-    shouldShowRegions = getValue(SHOW_REGIONS)
+    flagShowRegions = getValue(SHOW_REGIONS)
+
+  useEffect(() => {
+    if (flagShowRegions) add()
+    else remove()
+  }, [add, flagShowRegions, remove])
 
   return (
     <Source type="geojson" data={mapLayerData}>
@@ -34,7 +43,7 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         id="regions"
         layout={{
           // FIXME layer is added before flag is on
-          visibility: shouldShowRegions && mapLayerData ? 'visible' : 'none',
+          visibility: flagShowRegions && mapLayerData ? 'visible' : 'none',
         }}
       />
       <Layer
@@ -43,7 +52,7 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         id="region-highlighted"
         filter={filter}
         layout={{
-          visibility: shouldShowRegions && mapLayerData ? 'visible' : 'none',
+          visibility: flagShowRegions && mapLayerData ? 'visible' : 'none',
         }}
       />
     </Source>

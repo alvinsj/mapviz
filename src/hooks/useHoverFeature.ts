@@ -1,44 +1,74 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useMap, MapboxGeoJSONFeature } from 'react-map-gl'
+import { MapLayerEventType } from 'maplibre-gl'
 import throttle from 'lodash.throttle'
+
+export type UseHoverFeatureOpts = {
+  eventType?: keyof MapLayerEventType
+}
+
+export type HoverFeatureHandler = (
+  e: any,
+  feature?: MapboxGeoJSONFeature
+) => void
 
 export const useHoverFeature = (
   mapId: string,
-  layerName: string,
-  opts?: { eventType: 'mousemove' | 'mouseenter' }
-): { feature: MapboxGeoJSONFeature | undefined } => {
+  layerId: string,
+  opts: UseHoverFeatureOpts = { eventType: 'mousemove' }
+) => {
   const [feature, setFeature] = useState<MapboxGeoJSONFeature>()
   const { [mapId]: map } = useMap()
 
-  useEffect(() => {
-    if (!map) return
+  const handleMouseMove = useCallback(
+    (cb?: HoverFeatureHandler) =>
+      throttle((ev) => {
+        const features = map?.queryRenderedFeatures(ev.point, {
+          layers: [layerId],
+        })
 
-    const handleMouseMove = throttle((e) => {
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: [layerName],
-      })
+        if (features instanceof Array && features.length > 0) {
+          setFeature(features[0])
 
-      if (features instanceof Array && features.length > 0) {
-        setFeature(features[0])
+          // FIXME wrong return type queryRenderedFeatures
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+        } else if (typeof features === 'object') setFeature(features)
 
-        // FIXME wrong return type queryRenderedFeatures
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-      } else if (typeof features === 'object') setFeature(features)
-    }, 100)
+        if (cb) cb(ev, feature)
+      }, 100),
+    [feature, layerId, map]
+  )
 
-    // NOTE mousemove works better on fast hover
-    const { eventType = 'mousemove' } = opts || {}
-    map.on(eventType, layerName, handleMouseMove)
-    map.on('mouseleave', layerName, () => setFeature(undefined))
-    return () => {
-      map.off(eventType, layerName, handleMouseMove)
-      return
-    }
+  const handleMouseLeave = useCallback(() => setFeature(undefined), [])
+
+  const add = useCallback(
+    (cb?: (ev: any) => void) => {
+      map?.on(
+        opts?.eventType as keyof MapLayerEventType,
+        layerId,
+        handleMouseMove(cb)
+      )
+      map?.on('mouseleave', layerId, handleMouseLeave)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map])
+    [map]
+  )
 
-  return { feature }
+  const remove = useCallback(
+    (cb?: (ev: any) => void) => {
+      map?.off(
+        opts?.eventType as keyof MapLayerEventType,
+        layerId,
+        handleMouseMove(cb)
+      )
+      map?.on('mouseleave', layerId, () => handleMouseLeave)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [map]
+  )
+
+  return useMemo(() => ({ feature, add, remove }), [feature, add, remove])
 }
 
 export default useHoverFeature

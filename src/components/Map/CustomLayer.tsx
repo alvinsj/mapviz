@@ -64,8 +64,18 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
     [hoverZoneName]
   )
 
+  useEffect(() => {
+    addZBHover()
+    return () => removeZBHover()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // only flag change
+
   /// hover zoombox
-  const { feature: hoverZoomBoxFeature } = useHoverFeature(mapId, 'zoomBox', {
+  const {
+    feature: hoverZoomBoxFeature,
+    add: addZBHover,
+    remove: removeZBHover,
+  } = useHoverFeature(mapId, 'zoomBox', {
     eventType: 'mouseenter',
   })
   const hoverZoomBoxName = hoverZoomBoxFeature?.properties?.id
@@ -76,6 +86,13 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
 
   const [getValue] = useFeatureFlagContext(),
     flagEnableBboxZoom = getValue(BBOX_ZOOM)
+
+  useEffect(() => {
+    if (flagEnableBboxZoom) addZBHover()
+    else removeZBHover()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flagEnableBboxZoom]) // only flag change
 
   const zoomBoxData =
     mapLayerData && flagEnableBboxZoom

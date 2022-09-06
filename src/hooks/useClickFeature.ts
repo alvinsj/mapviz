@@ -12,8 +12,8 @@ export function useClickFeature(mapId: string, layerId: string) {
   const { [mapId]: map } = useMap()
   const [feature, setFeature] = useState<MapboxGeoJSONFeature>()
 
-  const handleClick = useMemo(
-    () => (cb: ClickFeatureHandler) =>
+  const handleClick = useCallback(
+    (cb?: ClickFeatureHandler) =>
       throttle((ev) => {
         const features = map?.queryRenderedFeatures(ev.point, {
           layers: [layerId],
@@ -33,13 +33,13 @@ export function useClickFeature(mapId: string, layerId: string) {
   )
 
   const add = useCallback(
-    (cb: (ev: any) => void) => map?.on('click', layerId, handleClick(cb)),
+    (cb?: (ev: any) => void) => map?.on('click', layerId, handleClick(cb)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [map]
   )
 
   const remove = useCallback(
-    (cb: (ev: any) => void) => map?.off('click', layerId, handleClick(cb)),
+    (cb?: (ev: any) => void) => map?.off('click', layerId, handleClick(cb)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [map]
   )
