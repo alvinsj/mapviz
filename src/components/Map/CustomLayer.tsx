@@ -3,8 +3,8 @@ import { Source, Layer } from 'react-map-gl'
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
 import { lighten, darken, transparentize } from 'color2k'
-import { useMap, LayerProps } from 'react-map-gl'
-import { featureCollection } from '@turf/helpers'
+import { useMap, LayerProps, MapboxGeoJSONFeature } from 'react-map-gl'
+import { FeatureCollection, Feature, featureCollection } from '@turf/helpers'
 
 import { useThemeContext } from '../../contexts/ThemeContext'
 
@@ -14,7 +14,7 @@ import useLayerClickHandler from '../../hooks/useLayerClickHandler'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 
 import { layerStyle, highlightLayerStyle } from './layerStyles'
-import { UseControlsProps } from './MapPluginMediator'
+import { useCustomControlsProps } from './MapPluginMediator'
 
 import { MapPluginComponentProps } from '../types'
 import { Theme } from '../../types'
@@ -43,10 +43,10 @@ const createLayerLabels = (source: string, labelName: string): LayerProps => ({
   },
 })
 
-const makeBboxes = (feats: any) => {
+const makeBboxes = (feats: MapboxGeoJSONFeature & { features?: Feature[] }) => {
   if (!feats || !feats.features) return
 
-  const boxes = feats.features.map((f: any, index: number) => {
+  const boxes = feats.features.map((f: Feature, index: number) => {
     return bboxPolygon(bbox(f), { properties: { id: index } })
   })
 
@@ -75,7 +75,8 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
     [selectedZoomBoxName]
   )
 
-  const zoomBoxData = mapLayerData && makeBboxes(mapLayerData)
+  const zoomBoxData =
+    mapLayerData && makeBboxes(mapLayerData as MapboxGeoJSONFeature)
 
   const [getValue] = useFeatureFlagContext(),
     shouldEnableBboxZoom = getValue(BBOX_ZOOM)
@@ -146,7 +147,10 @@ export function CustomLayer({ mapId }: MapPluginComponentProps) {
   )
 }
 
-export const useControls = (mapId: string, props: UseControlsProps) => {
+export const useCustomControls = (
+  mapId: string,
+  props: useCustomControlsProps
+) => {
   const [getValue, replaceFlag] = useFeatureFlagContext()
 
   const onToggleBox = useCallback(() => {

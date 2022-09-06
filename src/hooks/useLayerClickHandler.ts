@@ -5,6 +5,7 @@ import { useMap } from 'react-map-gl'
 export function useLayerClickHandler(
   mapId: string,
   layerId: string,
+  // FIXME event type
   onClick: (ev: any) => void
 ) {
   const { [mapId]: map } = useMap()

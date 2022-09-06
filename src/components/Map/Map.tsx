@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import ReactMapGl, {
   FullscreenControl,
+  MapProps,
   NavigationControl,
   ScaleControl,
 } from 'react-map-gl'
@@ -14,10 +15,10 @@ export type Props = {
   id: string
   children: ReactNode
   pluginMediator: MapMediator
-}
+} & Partial<MapProps>
 
-function Map({ id, children, pluginMediator }: Props) {
-  const { mapStyle, onSwitchTheme } = useBaseMap()
+function Map({ id, children, pluginMediator, ...mapProps }: Props) {
+  const { mapStyle, renderBaseControls } = useBaseMap()
 
   return (
     <div className="App">
@@ -35,6 +36,7 @@ function Map({ id, children, pluginMediator }: Props) {
           mapLib={maplibreGl}
           attributionControl={false}
           maxBounds={[103.58, 1.16, 104.1, 1.5]}
+          {...mapProps}
         >
           {children}
 
@@ -47,14 +49,8 @@ function Map({ id, children, pluginMediator }: Props) {
               className="maplibregl-ctrl maplibregl-ctrl-group 
               mapboxgl-ctrl mapboxgl-ctrl-group"
             >
-              <button type="button" onClick={() => onSwitchTheme('dark')}>
-                Dark
-              </button>
-              <button type="button" onClick={() => onSwitchTheme('light')}>
-                Light
-              </button>
-
-              {pluginMediator.renderCustomControls(id)}
+              {renderBaseControls(id)}
+              {pluginMediator.useCustomControls(id)}
             </div>
           </CustomControls>
         </ReactMapGl>

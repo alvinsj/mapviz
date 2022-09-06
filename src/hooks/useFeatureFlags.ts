@@ -1,26 +1,28 @@
 import { useCallback, useEffect, useState } from 'react'
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Flag<T> = {
   key: string
-  defaultValue: T
+  defaultValue: FlagValue
 }
+export type FlagValue = boolean
 
-export type GetFlags = (flags: Flag<any>[]) => Promise<{ [key: string]: any }>
-export type SetFlag = (flag: Flag<any>, val: any) => Promise<void>
-export type GetFlag = <T>(f: Flag<T>) => T | undefined
+export type GetFlags = (
+  flags: Flag<FlagValue>[]
+) => Promise<{ [key: string]: FlagValue }>
+export type SetFlag = (flag: Flag<FlagValue>, val: FlagValue) => Promise<void>
+export type GetFlag = (f: Flag<FlagValue>) => FlagValue | undefined
 
 export type UseFeatureFlagsOpts = {
   setFlag: SetFlag
-  onError: (e: any) => void
+  onError: (e: FlagValue) => void
 }
 
 export function useFeatureFlags(
-  flags: Flag<any>[],
+  flags: Flag<FlagValue>[],
   getFlags: GetFlags,
   opts?: UseFeatureFlagsOpts
 ) {
   const { setFlag = () => undefined, onError = () => undefined } = opts || {}
-  const [values, setValues] = useState<{ [key: string]: any }>({})
+  const [values, setValues] = useState<{ [key: string]: FlagValue }>({})
   const [, setCount] = useState(0)
   const forceUpdate = useCallback(() => setCount((count) => count + 1), [])
   const replaceFlag = useCallback<SetFlag>(
@@ -53,7 +55,7 @@ export function useFeatureFlags(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // once
 
-  const getValue = useCallback((f: Flag<any>) => values[f.key], [values])
+  const getValue = useCallback((f: Flag<FlagValue>) => values[f.key], [values])
 
   return {
     getValue,
