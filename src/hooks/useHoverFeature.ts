@@ -11,7 +11,6 @@ export const useHoverFeature = (
 
   useEffect(() => {
     if (!map) return
-    if (!map.getLayer(layerName)) return
 
     const handleMouseMove = throttle((e) => {
       const features = map.queryRenderedFeatures(e.point, {
@@ -27,13 +26,14 @@ export const useHoverFeature = (
       } else if (typeof features === 'object') setFeature(features)
     }, 100)
 
-    map.on('mousemove', handleMouseMove)
+    map.on('mousemove', layerName, handleMouseMove)
+    map.on('mouseleave', layerName, () => setFeature(undefined))
     return () => {
-      map.off('mousemove', handleMouseMove)
+      map.off('mousemove', layerName, handleMouseMove)
       return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, map?.getLayer(layerName)])
+  }, [map])
 
   return feature
 }
