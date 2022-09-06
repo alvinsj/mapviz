@@ -11,16 +11,17 @@ import { UseControlsProps } from './MapPluginMediator'
 import { regionLayerStyle, highlightRegionLayerStyle } from './layerStyles'
 
 const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
+const FEAT_PROPERTY_NAME = 'Name'
 
 export type MapPluginComponentProps = { mapId: string }
 export function RegionLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
-  const { mapLayer: mapRegions } = useMultiPolygonLayer(MAP_REGIONS_URL)
+  const { mapLayerData } = useMultiPolygonLayer(MAP_REGIONS_URL)
 
   const hoverFeature = useHoverFeature(mapId, 'regions')
-  const selectedRegion = hoverFeature?.properties?.cell_id || ''
+  const selectedRegion = hoverFeature?.properties?.[FEAT_PROPERTY_NAME] || ''
   const filter = useMemo(
-    () => ['in', 'cell_id', selectedRegion],
+    () => ['in', FEAT_PROPERTY_NAME, selectedRegion],
     [selectedRegion]
   )
 
@@ -28,13 +29,13 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
     shouldShowRegions = getValue(SHOW_REGIONS)
 
   return (
-    <Source type="geojson" data={mapRegions}>
+    <Source type="geojson" data={mapLayerData}>
       <Layer
         {...regionLayerStyle({ theme })}
         id="regions"
         layout={{
           // FIXME layer is added before flag is on
-          visibility: shouldShowRegions && mapRegions ? 'visible' : 'none',
+          visibility: shouldShowRegions && mapLayerData ? 'visible' : 'none',
         }}
       />
       <Layer
@@ -43,7 +44,7 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         id="region-highlighted"
         filter={filter}
         layout={{
-          visibility: shouldShowRegions && mapRegions ? 'visible' : 'none',
+          visibility: shouldShowRegions && mapLayerData ? 'visible' : 'none',
         }}
       />
     </Source>
@@ -59,7 +60,14 @@ export const useControls = (mapId: string, props: UseControlsProps) => {
   }, [getValue, replaceFlag])
 
   return (
-    <button {...props} type="button" onClick={() => onToggleBox()}>
+    <button
+      {...props}
+      style={{
+        backgroundColor: getValue(SHOW_REGIONS) ? 'lightcyan' : 'lightgray',
+      }}
+      type="button"
+      onClick={() => onToggleBox()}
+    >
       Reg
     </button>
   )

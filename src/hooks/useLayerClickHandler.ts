@@ -24,11 +24,11 @@ export function useLayerClickHandler(
     add: useCallback(() => {
       map?.on('click', layerId, onClick)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [map]),
     remove: useCallback(() => {
       map?.off('click', layerId, onClick)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [map]),
   }
 }
 

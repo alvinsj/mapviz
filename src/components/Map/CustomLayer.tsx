@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { Source, Layer } from 'react-map-gl'
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
-import { lighten, darken } from 'color2k'
+import { lighten, darken, transparentize } from 'color2k'
 import { useMap, LayerProps } from 'react-map-gl'
+import { featureCollection } from '@turf/helpers'
 
 import { useThemeContext } from '../../contexts/ThemeContext'
 
@@ -20,8 +21,10 @@ import { Theme } from '../../types'
 import { BBOX_ZOOM } from '../../config/featureFlags'
 
 const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
-const LAYER_NAME = 'layer1'
+const LAYER_NAME = 'layer2'
+const FEAT_PROPERTY_NAME = 'Unique ID'
 
+const dimColor = (color: string) => transparentize(color)
 const modifyColorWithTheme = (theme: Theme) => (color: string) =>
   theme === 'dark' ? lighten(color, 0.3) : darken(color, 0.3)
 
@@ -38,67 +41,101 @@ const createLayerLabels = (source: string, labelName: string): LayerProps => ({
   },
 })
 
+const makeBboxes = (feats: any) => {
+  if (!feats || !feats.features) return
+
+  const boxes = feats.features.map((f: any, index: number) => {
+    return bboxPolygon(bbox(f), { properties: { id: index } })
+  })
+
+  return featureCollection(boxes)
+}
+
 export function CustomLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
-  const { mapLayer } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
-  const hoverLayerFeature = useHoverFeature(mapId, LAYER_NAME)
-  const selectedZoneName = hoverLayerFeature?.properties?.zone_name
+  const { mapLayerData } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
 
-  const filterHighlightLayer1 = useMemo(
-    () => ['in', 'zone_name', selectedZoneName || ''],
+  // hover layer
+  const hoverLayerFeature = useHoverFeature(mapId, LAYER_NAME)
+  const selectedZoneName = hoverLayerFeature?.properties?.[FEAT_PROPERTY_NAME]
+  const filterHighlightLayer = useMemo(
+    () => ['in', FEAT_PROPERTY_NAME, selectedZoneName || ''],
     [selectedZoneName]
   )
 
-  const layer1Bbox = bboxPolygon(bbox(mapLayer))
+  /// hover zoombox
+  const hoverZoomBoxFeature = useHoverFeature(mapId, 'zoomBox')
+  const selectedZoomBoxName = hoverZoomBoxFeature?.properties?.id
+  const filterZoomBoxLayer = useMemo(
+    () => ['in', 'id', selectedZoneName || ''],
+    [selectedZoomBoxName]
+  )
+
+  const zoomBoxData = mapLayerData && makeBboxes(mapLayerData)
 
   const [getValue] = useFeatureFlagContext(),
     shouldEnableBboxZoom = getValue(BBOX_ZOOM)
 
-  const { map1 } = useMap()
+  const { [mapId]: map } = useMap()
   const { add, remove } = useLayerClickHandler(
-    'map1',
-    'layer1Bbox',
-    useCallback(() => {
-      if (!map1 || shouldEnableBboxZoom) return
+    mapId,
+    'zoomBox',
+    useCallback(
+      (ev) => {
+        if (!zoomBoxData || !shouldEnableBboxZoom || !ev.features) return
 
-      const [minLng, minLat, maxLng, maxLat] = bbox(mapLayer)
-      map1.getMap().fitBounds(
-        [
-          [minLng, minLat],
-          [maxLng, maxLat],
-        ],
-        { padding: 40, duration: 1000 }
-      )
-    }, [mapLayer, map1, shouldEnableBboxZoom])
+        const [minLng, minLat, maxLng, maxLat] = bbox(ev.features[0])
+        map?.fitBounds(
+          [
+            [minLng, minLat],
+            [maxLng, maxLat],
+          ],
+          { padding: 40, duration: 1000 }
+        )
+      },
+      [map, mapLayerData, shouldEnableBboxZoom]
+    )
   )
 
   useEffect(() => {
     if (shouldEnableBboxZoom) add()
     else remove()
-  }, [add, remove, shouldEnableBboxZoom])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldEnableBboxZoom]) // only when feature is on
 
   return (
     <>
-      {shouldEnableBboxZoom && mapLayer && (
-        <Source id="layer1BboxSource" type="geojson" data={layer1Bbox}>
+      {shouldEnableBboxZoom && zoomBoxData && (
+        <Source id="zoomBoxSource" type="geojson" data={zoomBoxData}>
+          <Layer
+            {...layerStyle({
+              theme,
+              modifyColor: selectedZoomBoxName
+                ? modifyColorWithTheme(theme)
+                : dimColor,
+            })}
+            id="zoomBox"
+          />
           <Layer
             {...layerStyle({
               theme,
               modifyColor: modifyColorWithTheme(theme),
             })}
-            id="layer1Bbox"
+            source="zoomBox"
+            id="zoomBox-highlighted"
+            filter={filterZoomBoxLayer}
           />
         </Source>
       )}
 
-      {mapLayer && (
-        <Source id="layer1Source" type="geojson" data={mapLayer}>
+      {mapLayerData && (
+        <Source id="layer1Source" type="geojson" data={mapLayerData}>
           <Layer {...layerStyle({ theme })} id={LAYER_NAME} />
           <Layer
             {...highlightLayerStyle({ theme })}
             source={LAYER_NAME}
-            id="layer1-highlighted"
-            filter={filterHighlightLayer1}
+            id={`${LAYER_NAME}-highlighted`}
+            filter={filterHighlightLayer}
           />
           <Layer {...createLayerLabels(LAYER_NAME, 'zone_name')} />
         </Source>
@@ -116,7 +153,14 @@ export const useControls = (mapId: string, props: UseControlsProps) => {
   }, [getValue, replaceFlag])
 
   return (
-    <button {...props} type="button" onClick={() => onToggleBox()}>
+    <button
+      {...props}
+      style={{
+        backgroundColor: getValue(BBOX_ZOOM) ? 'lightcyan' : 'lightgray',
+      }}
+      type="button"
+      onClick={() => onToggleBox()}
+    >
       Box
     </button>
   )

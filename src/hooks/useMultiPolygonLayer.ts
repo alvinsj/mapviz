@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
 import { useMemoizedState } from './useMemoizedState'
+import { MapboxGeoJSONFeature } from 'react-map-gl'
 
-function useMultiPolygonLayer(layerUrl: string) {
-  const [mapLayer, setMapLayer] = useMemoizedState(undefined, layerUrl)
+function useMultiPolygonLayer(layerUrl: string): {
+  mapLayerData: MapboxGeoJSONFeature | undefined
+} {
+  const [mapLayerData, setMapLayerData] = useMemoizedState(undefined, layerUrl)
 
   useEffect(() => {
-    if (mapLayer) return // guard
+    if (mapLayerData) return // guard
 
     const token = localStorage.getItem('token')?.toString()
 
@@ -16,13 +19,13 @@ function useMultiPolygonLayer(layerUrl: string) {
     fetch(layerUrl, { headers: authHeaders })
       .then((response) => response.json())
       .then((data) => {
-        setMapLayer(data)
+        setMapLayerData(data)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // once
 
   return {
-    mapLayer,
+    mapLayerData,
   }
 }
 export default useMultiPolygonLayer
