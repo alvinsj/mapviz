@@ -3,7 +3,6 @@ import { Source, Layer } from 'react-map-gl'
 import { useContextSelector } from 'use-context-selector'
 
 import context from '../../context'
-import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
 import { useThemeContext } from '../../contexts/ThemeContext'
 import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
@@ -13,11 +12,11 @@ import { regionLayerStyle, highlightRegionLayerStyle } from './layerStyles'
 
 const FEAT_PROPERTY_NAME = 'Name'
 
-export type MapPluginComponentProps = { mapId: string, mepRegionsUrl: string }
+export type MapPluginComponentProps = { mapId: string }
 export function RegionLayer({ mapId }: MapPluginComponentProps) {
 
   const [theme] = useThemeContext()
-  const mapLayerData = useContextSelector(context, v => v[0].mapLayerData)
+  const mapLayerData = useContextSelector(context, v => (v as any)[0].mapLayerData)
 
   const {
     feature: hoverRegion,

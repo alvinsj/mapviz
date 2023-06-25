@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 import Tree from './Tree'
 import { useContextSelector } from 'use-context-selector'
 import context from '../context'
+import { GeoJSONFeature } from 'maplibre-gl'
 
-const label = (title, count) =>
+const label = (title: string, count?: number) =>
   <span style={{ color: 'gray' }}>{title} <sup>{count && `(${count})`}</sup></span>
 
-const getTree = (obj) => {
+const getTree = (obj: any) => {
   if (obj && typeof obj === 'object') {
     const items = Object.keys(obj).map((key) => {
       return (
@@ -32,9 +33,9 @@ const getTree = (obj) => {
 
 const GeoExplorer = () => {
 
-  const setContextState = useContextSelector(context, v => v[1])
-  const setMapLayerData = useCallback((data) => {
-    setContextState(s => ({
+  const setContextState = useContextSelector(context, v => (v as any)[1])
+  const setMapLayerData = useCallback((data: GeoJSONFeature) => {
+    setContextState((s: any) => ({
       ...s,
       mapLayerData: data,
     }))
@@ -59,13 +60,16 @@ const GeoExplorer = () => {
 
       {/* file input to load data */}
       <input type="file" onChange={(e) => {
-        const file = e.target.files[0]
+        const target = e.target as HTMLInputElement
+        const file = target?.files?.[0]
         const reader = new FileReader()
         reader.onload = (e) => {
-          const data = JSON.parse(e.target.result)
+          const target = e.target as FileReader
+          const fileUrl = target.result as string
+          const data = JSON.parse(fileUrl)
           setData(data)
         }
-        reader.readAsText(file)
+        if (file) reader.readAsText(file)
       }} />
 
       <ul>{tree}</ul>

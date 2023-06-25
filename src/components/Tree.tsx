@@ -1,7 +1,11 @@
-import { useState } from 'react'
+import { useState, ReactNode } from 'react'
 
-// collapsible tree list item component
-const Tree = ({ summary, hideCollapsible, children }) => {
+type Props = {
+  summary: ReactNode
+  hideCollapsible?: boolean
+  children: ReactNode
+}
+const Tree = ({ summary, hideCollapsible, children }: Props) => {
   const [collapsed, setCollapsed] = useState(true)
 
   return (

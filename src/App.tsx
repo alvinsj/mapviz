@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, ReactNode } from 'react'
 import Map from './components/Map'
 
 import './App.css'
@@ -6,12 +6,14 @@ import './App.css'
 import GeoExplorer from './components/GeoExplorer'
 import context from './context'
 
-const StateProvider = ({ children }) => (
+type StateProviderProps = {
+  children: ReactNode
+}
+const StateProvider = ({ children }: StateProviderProps) => (
   <context.Provider value={useState({ mapLayerData: undefined })}>
     {children}
   </context.Provider>
 )
-
 
 function App() {
   return (
