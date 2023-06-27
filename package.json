@@ -17,7 +17,7 @@
     "lodash.flowright": "^3.5.0",
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "npm:empty-npm-package@1.0.0",
-    "maplibre-gl": "^2.4.0",
+    "maplibre-gl": "3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-map-gl": "^7.0.19"
