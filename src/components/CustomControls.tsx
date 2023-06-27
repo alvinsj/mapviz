@@ -50,7 +50,7 @@ function CustomOverlay(props: { children: React.ReactElement }) {
 
   return (
     map &&
-    createPortal(cloneElement(props.children, { map }), ctrl.getElement())
+    createPortal(cloneElement(props.children, { map }), ctrl.getElement()!)
   )
 }
 
