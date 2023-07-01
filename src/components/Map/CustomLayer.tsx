@@ -8,7 +8,7 @@ import { Feature, featureCollection } from '@turf/helpers'
 
 import { useThemeContext } from '../../contexts/ThemeContext'
 
-import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
+import { useContextSelector } from 'use-context-selector'
 import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 
@@ -18,8 +18,8 @@ import { MapPluginComponentProps } from '../types'
 import { Theme } from '../../types'
 import { BBOX_ZOOM } from '../../config/featureFlags'
 import { useClickFeature } from '../../hooks/useClickFeature'
+import context from '../../context'
 
-const VITE_MULTIPOLYGONS_1_URL = import.meta.env.VITE_MULTIPOLYGONS_1_URL
 const LAYER_NAME = 'layer2'
 const FEAT_PROPERTY_NAME = 'Unique ID'
 
@@ -54,7 +54,7 @@ const makeBboxes = (feats: MapboxGeoJSONFeature & { features?: Feature[] }) => {
 
 export function CustomLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
-  const { mapLayerData } = useMultiPolygonLayer(VITE_MULTIPOLYGONS_1_URL)
+  const mapLayerData = useContextSelector(context, v => (v as any)[0].mapLayerData2)
 
   // hover layer
   const { feature: hoverLayerFeature } = useHoverFeature(mapId, LAYER_NAME)
