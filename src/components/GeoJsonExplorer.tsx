@@ -1,10 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { GeoJSONFeature } from 'maplibre-gl'
 import {
-  FileDropzone, FileListItem, LoadingPlaceholder, withTheme2,
+  FileDropzone,
+  FileListItem,
+  LoadingPlaceholder,
+  withTheme2,
   Field,
   VerticalGroup,
-  Container
+  Container,
+  DropzoneFile
 } from '@grafana/ui'
 import { useContextSelector } from 'use-context-selector'
 
