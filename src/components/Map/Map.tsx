@@ -31,7 +31,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
             latitude: 1.367786,
             zoom: 10,
           }}
-          style={{ width: '90vw', height: '90vh' }}
+          style={{ width: '60vw', height: 'calc(100vh - 49px)' }}
           mapStyle={mapStyle}
           mapLib={maplibreGl}
           attributionControl={false}

@@ -26,15 +26,8 @@ function App() {
   return (
     <StateProvider>
       <PageToolbar title="Explore." />
-      <div
-        className="App"
-        style={{
-          width: '100vw',
-          display: 'flex',
-          justifyContent: 'space-around',
-        }}
-      >
-        <div style={{ height: '100vh', width: '40vw', overflow: 'scroll' }}>
+      <div className="app">
+        <main className='main'>
           <TabsBar>
             {tabs.map((tab, index) => {
               return (
@@ -47,12 +40,12 @@ function App() {
               )
             })}
           </TabsBar>
-          <TabContent className="main">
+          <TabContent className="tabContent">
             <GeoJsonExplorer />
           </TabContent>
-        </div>
-        <Map id="map2" reuseMaps style={{ height: '100vh', width: '60vw' }} />
-      </div >
+        </main>
+        <Map id="map2" className="map" reuseMaps />
+      </div>
     </StateProvider>
   )
 }
