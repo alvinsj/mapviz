@@ -1,8 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
-import Tree from './Tree'
-import { useContextSelector } from 'use-context-selector'
-import context from '../context'
 import { GeoJSONFeature } from 'maplibre-gl'
+import {
+  FileDropzone, FileListItem, LoadingPlaceholder, withTheme2,
+  Field,
+  VerticalGroup,
+  Container
+} from '@grafana/ui'
+import { useContextSelector } from 'use-context-selector'
+
+import Tree from './Tree'
+import context from '../context'
 
 const label = (title: string, count?: number) =>
   <span style={{ color: 'gray' }}>{title} <sup>{count && `(${count})`}</sup></span>
@@ -30,9 +37,11 @@ const getTree = (obj: any) => {
     return obj
   }
 }
+const fileListRenderer = (file: DropzoneFile, removeFile: (file: DropzoneFile) => void) => {
+  return <FileListItem file={{ ...file, progress: undefined }} removeFile={removeFile} />
+}
 
-const GeoExplorer = () => {
-
+const GeoJsonExplorer = () => {
   const setContextState = useContextSelector(context, v => (v as any)[1])
   const setMapLayerData = useCallback((data: GeoJSONFeature) => {
     setContextState((s: any) => ({
@@ -45,38 +54,40 @@ const GeoExplorer = () => {
 
   // show structure of the geojson file recursively in a tree 
   const [tree, setTree] = useState(null)
+
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (data) {
       setTree(getTree(data))
       setMapLayerData(data)
+      setLoading(false)
     }
-  }
-    , [data, setMapLayerData])
-
+  }, [data, setMapLayerData])
 
   return (
-    <div>
-      <h1>GeoExplorer</h1>
-
-      {/* file input to load data */}
-      <input type="file" onChange={(e) => {
-        const target = e.target as HTMLInputElement
-        const file = target?.files?.[0]
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          const target = e.target as FileReader
-          const fileUrl = target.result as string
-          const data = JSON.parse(fileUrl)
-          setData(data)
-        }
-        if (file) reader.readAsText(file)
-      }} />
-
-      <ul>{tree}</ul>
-    </div>
+    <Container padding={'md'}>
+      <VerticalGroup spacing="md">
+        <Field label="Upload a geojson file" description="Explore the content upon upload">
+          <FileDropzone
+            fileListRenderer={fileListRenderer}
+            options={{ multiple: false, accept: '.geojson' }}
+            readAs="readAsText" onLoad={(result) => {
+              setLoading(true)
+              setData(JSON.parse(result as string))
+            }}
+          />
+        </Field>
+        {loading && <LoadingPlaceholder text="Loading data..." />}
+        {!!tree && <Field label="Structure">
+          <>
+            {tree}
+          </>
+        </Field>}
+      </VerticalGroup>
+    </Container>
   )
 
 }
 
-export default GeoExplorer
+export default withTheme2(GeoJsonExplorer)
 
