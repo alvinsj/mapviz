@@ -14,6 +14,7 @@ export type Props = {
   id: string
   children: ReactNode
   pluginMediator: MapMediator
+  width: number
 }
 
 function Map({ id, children, pluginMediator, ...mapProps }: Props) {
