@@ -17,6 +17,7 @@ export type Props = {
 }
 
 function Map({ id, children, pluginMediator, ...mapProps }: Props) {
+  const { width } = mapProps
   const { mapStyle, renderBaseControls, error } = useBaseMap()
 
   return (
@@ -31,7 +32,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
             latitude: 1.367786,
             zoom: 10,
           }}
-          style={{ width: '60vw', height: 'calc(100vh - 49px)' }}
+          style={{ width, height: 'calc(100vh - 49px)' }}
           mapStyle={mapStyle}
           mapLib={maplibreGl}
           attributionControl={false}

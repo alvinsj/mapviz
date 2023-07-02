@@ -1,0 +1,38 @@
+.adjustable-width-layout {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+}
+
+.adjustable-width-element {
+  display: flex;
+}
+
+@keyframes animatedBackground {
+  0% {
+    background-color: red;
+  }
+  25% {
+    background-color: blue;
+  }
+  50% {
+    background-color: green;
+  }
+  75% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: orange;
+  }
+}
+
+.resize-handle {
+  width: 8px;
+  cursor: col-resize;
+
+  animation: animatedBackground 10s ease infinite;
+}
+
+.adjustable-width-element:last-of-type .resize-handle {
+  display: none;
+}

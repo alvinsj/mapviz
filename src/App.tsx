@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, FC, useEffect } from 'react'
 import Map from './components/Map'
 
 import './App.css'
@@ -6,6 +6,7 @@ import './App.css'
 import GeoJsonExplorer from './components/GeoJsonExplorer'
 import context from './context'
 import { TabContent, TabsBar, Tab, PageToolbar } from '@grafana/ui'
+import AdjustableWidthLayout from './components/AdjustableWidthLayout'
 
 type StateProviderProps = {
   children: ReactNode
@@ -20,31 +21,48 @@ const initialTabs = [
   { label: 'Open a map layer', key: 'explore', active: true },
 ]
 
-function App() {
+const Left: FC<{ width: number }> = ({ width }) => {
   const [tabs, updateTabs] = useState(initialTabs)
+
+  return <main className='main' style={{ width }}>
+    <TabsBar>
+      {tabs.map((tab, index) => {
+        return (
+          <Tab
+            key={index}
+            label={tab.label}
+            active={tab.active}
+            onChangeTab={() => updateTabs(tabs.map((tab, idx) => ({ ...tab, active: idx === index })))}
+          />
+        )
+      })}
+    </TabsBar>
+    <TabContent className="tabContent">
+      <GeoJsonExplorer />
+    </TabContent>
+  </main>
+}
+
+const MainMap: FC<{ width: number }> = ({ width }) => {
+  return <Map id="main-map" className="map" reuseMaps width={width} />
+}
+
+function App() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <StateProvider>
       <PageToolbar title="Explore." />
       <div className="app">
-        <main className='main'>
-          <TabsBar>
-            {tabs.map((tab, index) => {
-              return (
-                <Tab
-                  key={index}
-                  label={tab.label}
-                  active={tab.active}
-                  onChangeTab={() => updateTabs(tabs.map((tab, idx) => ({ ...tab, active: idx === index })))}
-                />
-              )
-            })}
-          </TabsBar>
-          <TabContent className="tabContent">
-            <GeoJsonExplorer />
-          </TabContent>
-        </main>
-        <Map id="map2" className="map" reuseMaps />
+        <AdjustableWidthLayout
+          contents={[Left, MainMap]}
+          initialWidths={[windowWidth * 0.3, windowWidth * 0.7]}
+        />
       </div>
     </StateProvider>
   )
