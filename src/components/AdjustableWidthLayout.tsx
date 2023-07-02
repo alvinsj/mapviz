@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './AdjustableWidthLayout.css'
 type Props = {
@@ -18,6 +18,11 @@ const AdjustableWidthLayout: React.FC<Props> = ({ contents, initialWidths }: Pro
     newWidths[index + 1] = newWidths[index + 1] - (newWidth - widths[index])
     setWidths(newWidths)
   }
+
+  useEffect(() => {
+    setWidths(initialWidths)
+  }, [initialWidths])
+
 
   return (
     <div className="adjustable-width-layout">
