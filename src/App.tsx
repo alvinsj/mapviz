@@ -7,6 +7,7 @@ import GeoJsonExplorer from './components/GeoJsonExplorer'
 import context from './context'
 import { TabContent, TabsBar, Tab, PageToolbar } from '@grafana/ui'
 import AdjustableWidthLayout from './components/AdjustableWidthLayout'
+import AvailableData from './components/AvailableData'
 
 type StateProviderProps = {
   children: ReactNode
@@ -19,28 +20,36 @@ const StateProvider = ({ children }: StateProviderProps) => (
 
 const initialTabs = [
   { label: 'Open a map layer', key: 'explore', active: true },
+  { label: 'Available data', key: 'data', active: false },
 ]
 
 const Left: FC<{ width: number }> = ({ width }) => {
   const [tabs, updateTabs] = useState(initialTabs)
 
-  return <main className='main' style={{ width }}>
-    <TabsBar>
-      {tabs.map((tab, index) => {
-        return (
-          <Tab
-            key={index}
-            label={tab.label}
-            active={tab.active}
-            onChangeTab={() => updateTabs(tabs.map((tab, idx) => ({ ...tab, active: idx === index })))}
-          />
-        )
-      })}
-    </TabsBar>
-    <TabContent className="tabContent">
-      <GeoJsonExplorer />
-    </TabContent>
-  </main>
+  return (
+    <main className="main" style={{ width }}>
+      <TabsBar>
+        {tabs.map((tab, index) => {
+          return (
+            <Tab
+              key={index}
+              label={tab.label}
+              active={tab.active}
+              onChangeTab={() =>
+                updateTabs(
+                  tabs.map((tab, idx) => ({ ...tab, active: idx === index }))
+                )
+              }
+            />
+          )
+        })}
+      </TabsBar>
+      <TabContent className="tabContent">
+        {tabs[0].active && <GeoJsonExplorer />}
+        {tabs[1].active && <AvailableData />}
+      </TabContent>
+    </main>
+  )
 }
 
 const MainMap: FC<{ width: number }> = ({ width }) => {
