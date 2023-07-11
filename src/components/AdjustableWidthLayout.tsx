@@ -40,22 +40,22 @@ const AdjustableWidthLayout: React.FC<Props> = ({
             <Child width={width} />
             <div
               className="resize-handle"
-              onMouseDown={(e) => {
+              onPointerDown={(e) => {
                 const startX = e.clientX
                 const startWidth = width
 
-                const handleMouseMove = (event: MouseEvent) => {
+                const handlePointerMove = (event: PointerEvent) => {
                   const newWidth = startWidth + event.clientX - startX
                   handleResize(index, newWidth)
                 }
 
-                const handleMouseUp = () => {
-                  window.removeEventListener('mousemove', handleMouseMove)
-                  window.removeEventListener('mouseup', handleMouseUp)
+                const handlePointerUp = () => {
+                  window.removeEventListener('pointermove', handlePointerMove)
+                  window.removeEventListener('pointerup', handlePointerUp)
                 }
 
-                window.addEventListener('mousemove', handleMouseMove)
-                window.addEventListener('mouseup', handleMouseUp)
+                window.addEventListener('pointermove', handlePointerMove)
+                window.addEventListener('pointerup', handlePointerUp)
               }}
             />
           </div>
