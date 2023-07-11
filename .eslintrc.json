@@ -12,9 +12,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -23,11 +21,9 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "max-len": ["error", { "code": 80 }],
     "react/react-in-jsx-scope": "off",
-    "semi": [
-      "error",
-      "never"
-    ],
+    "semi": ["error", "never"],
     "no-console": "error",
     "quotes": [
       2,
