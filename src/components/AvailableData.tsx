@@ -1,4 +1,5 @@
 import { Container } from '@grafana/ui'
+import { Link } from 'react-router-dom'
 
 const files = import.meta.glob('../../public/layers/*.geojson', {
   as: 'raw',
@@ -11,17 +12,20 @@ const fileUrls = Object.keys(files).map((key) => [
 
 const AvailableData = () => {
   return (
-    <Container padding='md'>
+    <Container padding="md">
       <ol>
         {fileUrls.map(([fileName, url]) => (
           <li key={fileName}>
-            <a href={url} target="_blank" rel="noreferrer">
+            <Link
+              to={'/'}
+              state={{ fromAvailableData: true, url: url }}
+            >
               {fileName}
-            </a>
+            </Link>
           </li>
         ))}
       </ol>
-    </Container>
+    </Container >
   )
 }
 

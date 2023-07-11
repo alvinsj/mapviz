@@ -1,5 +1,6 @@
 import { useState, ReactNode, FC, useEffect } from 'react'
 import Map from './components/Map'
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 
 import './App.css'
 
@@ -19,12 +20,35 @@ const StateProvider = ({ children }: StateProviderProps) => (
 )
 
 const initialTabs = [
-  { label: 'Open a map layer', key: 'explore', active: true },
-  { label: 'Available data', key: 'data', active: false },
+  {
+    label: 'Open a map layer',
+    key: 'explore',
+    element: <GeoJsonExplorer />,
+    active: true,
+    path: '/',
+  },
+  {
+    label: 'Available data',
+    key: 'data',
+    element: <AvailableData />,
+    active: false,
+    path: '/data',
+  },
 ]
 
 const Left: FC<{ width: number }> = ({ width }) => {
   const [tabs, updateTabs] = useState(initialTabs)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    const tab = tabs.find((tab) => tab.path === location.pathname)
+    if (tab && !tab.active) {
+      updateTabs(
+        tabs.map((tab) => ({ ...tab, active: tab.path === location.pathname }))
+      )
+    }
+  }, [location.pathname, tabs])
 
   return (
     <main className="main" style={{ width }}>
@@ -35,18 +59,22 @@ const Left: FC<{ width: number }> = ({ width }) => {
               key={index}
               label={tab.label}
               active={tab.active}
-              onChangeTab={() =>
+              onChangeTab={() => {
                 updateTabs(
                   tabs.map((tab, idx) => ({ ...tab, active: idx === index }))
                 )
-              }
+                navigate(tab.path, { replace: true })
+              }}
             />
           )
         })}
       </TabsBar>
       <TabContent className="tabContent">
-        {tabs[0].active && <GeoJsonExplorer />}
-        {tabs[1].active && <AvailableData />}
+        <Routes>
+          {tabs.map((tab) => (
+            <Route key={tab.key} path={tab.path} element={tab.element} />
+          ))}
+        </Routes>
       </TabContent>
     </main>
   )
