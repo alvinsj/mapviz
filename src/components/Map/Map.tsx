@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import ReactMapGl, {
+  AttributionControl,
   FullscreenControl,
   NavigationControl,
   ScaleControl,
@@ -57,6 +58,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
               {/* {pluginMediator.renderCustomControls(id)} */}
             </div>
           </CustomControls>
+          <AttributionControl />
         </ReactMapGl>
       )}
     </>
