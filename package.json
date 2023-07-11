@@ -15,6 +15,7 @@
     "@turf/bbox-polygon": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "color2k": "^2.0.0",
+    "lodash": "^4.17.21",
     "lodash.flowright": "^3.5.0",
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "npm:empty-npm-package@1.0.0",
@@ -27,6 +28,7 @@
     "react-virtualized": "^9.22.5",
     "sass": "^1.63.6",
     "scheduler": "^0.23.0",
+    "swr": "^2.2.0",
     "use-context-selector": "^1.4.1"
   },
   "devDependencies": {
