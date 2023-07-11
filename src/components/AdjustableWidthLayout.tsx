@@ -6,12 +6,16 @@ type Props = {
   initialWidths: number[]
 }
 
-const AdjustableWidthLayout: React.FC<Props> = ({ contents, initialWidths }: Props) => {
+const AdjustableWidthLayout: React.FC<Props> = ({
+  contents,
+  initialWidths,
+}: Props) => {
   const [widths, setWidths] = useState<number[]>(initialWidths)
 
   const handleResize = (index: number, adjustedWidth: number) => {
     const newWidths = [...widths]
-    const newWidth = Math.max(adjustedWidth, 300)
+    let newWidth = Math.max(adjustedWidth, 300)
+    newWidth = Math.min(newWidth, window.innerWidth - 300)
 
     newWidths[index] = newWidth
     // adjust the width of the next element to keep the total width the same
@@ -22,7 +26,6 @@ const AdjustableWidthLayout: React.FC<Props> = ({ contents, initialWidths }: Pro
   useEffect(() => {
     setWidths(initialWidths)
   }, [initialWidths])
-
 
   return (
     <div className="adjustable-width-layout">
@@ -55,11 +58,11 @@ const AdjustableWidthLayout: React.FC<Props> = ({ contents, initialWidths }: Pro
                 window.addEventListener('mouseup', handleMouseUp)
               }}
             />
-          </div>)
+          </div>
+        )
       })}
     </div>
   )
 }
-
 
 export default AdjustableWidthLayout
