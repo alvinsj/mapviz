@@ -27,7 +27,7 @@ const fileListRenderer = (
     />
   )
 }
-export type Props = { width: number }
+export type Props = { width: number, theme: any }
 const GeoJsonExplorer: FC<Props> = ({ width }) => {
   const setContextState = useContextSelector(context, (v) => (v as any)[1])
   const setMapLayerData = useCallback(
@@ -104,4 +104,4 @@ const GeoJsonExplorer: FC<Props> = ({ width }) => {
   )
 }
 
-export default withTheme2(GeoJsonExplorer)
+export default withTheme2<Props>(GeoJsonExplorer)
