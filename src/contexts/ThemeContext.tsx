@@ -8,10 +8,13 @@ import {
 } from 'react'
 import { Theme } from '../types'
 
-const initialTheme = window?.matchMedia?.('(prefers-color-scheme: dark)')
-  .matches
-  ? 'dark'
-  : 'light'
+// FIXME dark theme for now
+// const initialTheme = window?.matchMedia?.('(prefers-color-scheme: dark)')
+//   .matches
+//   ? 'dark'
+//   : 'light'
+
+const initialTheme = 'dark'
 
 export type ThemeContextType = [
   Theme,

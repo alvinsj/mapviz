@@ -1,27 +1,35 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { Source, Layer } from 'react-map-gl'
+import { useContextSelector } from 'use-context-selector'
 
-import useMultiPolygonLayer from '../../hooks/useMultiPolygonLayer'
+import context from '../../context'
 import { useThemeContext } from '../../contexts/ThemeContext'
 import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 import { SHOW_REGIONS } from '../../config/featureFlags'
+import { MapPluginComponentProps } from '../types'
 
-import { regionLayerStyle, highlightRegionLayerStyle } from './layerStyles'
+import {
+  regionLayerStyle,
+  highlightRegionLayerStyle,
+  pointLayerStyle,
+} from './layerStyles'
 
-const MAP_REGIONS_URL = import.meta.env.VITE_MAP_REGIONS_URL
 const FEAT_PROPERTY_NAME = 'Name'
 
-export type MapPluginComponentProps = { mapId: string }
 export function RegionLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
-  const { mapLayerData } = useMultiPolygonLayer(MAP_REGIONS_URL)
+  const mapLayerData = useContextSelector(
+    context,
+    (v) => (v as any)[0].mapLayerData
+  )
 
   const {
     feature: hoverRegion,
     add,
     remove,
   } = useHoverFeature(mapId, 'regions')
+
   const hoverRegionName = hoverRegion?.properties?.[FEAT_PROPERTY_NAME] || ''
   const filter = useMemo(
     () => ['in', FEAT_PROPERTY_NAME, hoverRegionName],
@@ -35,6 +43,8 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
     if (flagShowRegions) add()
     else remove()
   }, [add, flagShowRegions, remove])
+
+  if (!mapLayerData) return <div />
 
   return (
     <Source type="geojson" data={mapLayerData}>
@@ -54,6 +64,12 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         layout={{
           visibility: flagShowRegions && mapLayerData ? 'visible' : 'none',
         }}
+      />
+      <Layer
+        {...pointLayerStyle({ theme })}
+        filter={['==', '$type', 'Point']}
+        source="regions"
+        id="region-points"
       />
     </Source>
   )

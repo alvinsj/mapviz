@@ -14,9 +14,11 @@ export type Props = {
   id: string
   children: ReactNode
   pluginMediator: MapMediator
+  width: number
 }
 
 function Map({ id, children, pluginMediator, ...mapProps }: Props) {
+  const { width } = mapProps
   const { mapStyle, renderBaseControls, error } = useBaseMap()
 
   return (
@@ -31,7 +33,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
             latitude: 1.367786,
             zoom: 10,
           }}
-          style={{ width: '90vw', height: '90vh' }}
+          style={{ width, height: 'calc(100vh - 49px)' }}
           mapStyle={mapStyle}
           mapLib={maplibreGl}
           attributionControl={false}
@@ -52,7 +54,7 @@ function Map({ id, children, pluginMediator, ...mapProps }: Props) {
               mapboxgl-ctrl mapboxgl-ctrl-group"
             >
               {renderBaseControls()}
-              {pluginMediator.renderCustomControls(id)}
+              {/* {pluginMediator.renderCustomControls(id)} */}
             </div>
           </CustomControls>
         </ReactMapGl>
