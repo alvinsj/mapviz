@@ -7,6 +7,7 @@ import { useThemeContext } from '../../contexts/ThemeContext'
 import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 import { SHOW_REGIONS } from '../../config/featureFlags'
+import { MapPluginComponentProps } from '../types'
 
 import {
   regionLayerStyle,
@@ -16,7 +17,6 @@ import {
 
 const FEAT_PROPERTY_NAME = 'Name'
 
-export type MapPluginComponentProps = { mapId: string }
 export function RegionLayer({ mapId }: MapPluginComponentProps) {
   const [theme] = useThemeContext()
   const mapLayerData = useContextSelector(
@@ -44,7 +44,7 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
     else remove()
   }, [add, flagShowRegions, remove])
 
-  if (!mapLayerData) return false
+  if (!mapLayerData) return <div />
 
   return (
     <Source type="geojson" data={mapLayerData}>

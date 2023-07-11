@@ -1,25 +1,31 @@
 import { ComponentType, useMemo } from 'react'
 import { MapProps } from 'react-map-gl'
 
+import { MapPluginComponentProps } from '../types'
+
 export type Plugin = {
   name: string
-  component: ComponentType<{ mapId: string }>
+  component: ComponentType<MapPluginComponentProps>
   hooks?: {
-    customControls?: ComponentType<{ mapId: string }>
+    customControls?: ComponentType<MapPluginComponentProps>
   }
+}
+
+export type WithMapMediator = MapProps & {
+  id: string
+  pluginMediator: MapMediator
 }
 
 export const addMapPlugins =
   (...plugins: Plugin[]) =>
-  (
-    Base: ComponentType<MapProps & { id: string; pluginMediator: MapMediator }>
-  ) =>
-    function MapWithPlugins(props: MapProps & { id: string }) {
-      if (!props.id) throw new Error('id is required props to use Map plugin')
-      const mapMediator = useMemo(() => new MapMediator(plugins, props.id), [])
+    (Base: ComponentType<WithMapMediator>) =>
+      function MapWithPlugins(props: MapProps & { id: string }) {
+        if (!props.id) throw new Error('id is required props to use Map plugin')
+        const mapMediator = useMemo(
+          () => new MapMediator(plugins, props.id), [props.id])
 
-      return <Base {...props} pluginMediator={mapMediator} />
-    }
+        return <Base {...props} pluginMediator={mapMediator} />
+      }
 
 export class MapMediator {
   _plugins: Plugin[]
