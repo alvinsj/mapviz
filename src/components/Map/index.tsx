@@ -24,12 +24,12 @@ export default compose(
         customControls: RegionLayerControls,
       },
     },
-    {
-      name: 'CustomLayer',
-      component: CustomLayer,
-      hooks: {
-        customControls: CustomLayerControls,
-      },
-    }
+    // {
+    //   name: 'CustomLayer',
+    //   component: CustomLayer,
+    //   hooks: {
+    //     customControls: CustomLayerControls,
+    //   },
+    // }
   )
 )(Map)
