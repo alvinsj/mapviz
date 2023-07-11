@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
-import { GeoJSONFeature } from 'maplibre-gl'
+import { useState, useEffect, useCallback, ReactElement, FC } from 'react'
 import {
   FileDropzone,
   FileListItem,
@@ -12,44 +11,11 @@ import {
 } from '@grafana/ui'
 import { useContextSelector } from 'use-context-selector'
 
-import Tree from './Tree'
+import { TreeList } from './Tree'
 import context from '../context'
 import { useLocation } from 'react-router-dom'
 import useMultiPolygonLayer from '../hooks/useMultiPolygonLayer'
 
-const label = (title: string, count?: number) => (
-  <span style={{ color: 'gray' }}>
-    {title} <sup>{count && `(${count})`}</sup>
-  </span>
-)
-
-const getTree = (obj: any) => {
-  if (obj && typeof obj === 'object') {
-    const items = Object.keys(obj).map((key) => {
-      return (
-        <Tree
-          key={key}
-          summary={
-            typeof obj[key] === 'object' ? (
-              label(key, obj[key] instanceof Array ? obj[key].length : null)
-            ) : (
-              <>
-                {label(key)}: {getTree(obj[key])}
-              </>
-            )
-          }
-          hideCollapsible={typeof obj[key] !== 'object' || obj[key] === null}
-        >
-          {getTree(obj[key])}
-        </Tree>
-      )
-    })
-
-    return <ul>{items}</ul>
-  } else {
-    return obj
-  }
-}
 const fileListRenderer = (
   file: DropzoneFile,
   removeFile: (file: DropzoneFile) => void
@@ -61,8 +27,8 @@ const fileListRenderer = (
     />
   )
 }
-
-const GeoJsonExplorer = () => {
+export type Props = { width: number }
+const GeoJsonExplorer: FC<Props> = ({ width }) => {
   const setContextState = useContextSelector(context, (v) => (v as any)[1])
   const setMapLayerData = useCallback(
     (data: mapboxgl.MapboxGeoJSONFeature) => {
@@ -77,16 +43,16 @@ const GeoJsonExplorer = () => {
   const [data, setData] = useState<mapboxgl.MapboxGeoJSONFeature | null>(null)
 
   // show structure of the geojson file recursively in a tree
-  const [tree, setTree] = useState(null)
+  const [tree, setTree] = useState<ReactElement | null>(null)
   const [file, setFile] = useState('')
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (data) {
-      setTree(getTree(data))
+      setTree(<TreeList width={width} data={data} />)
       setMapLayerData(data)
       setLoading(false)
     }
-  }, [data, setMapLayerData])
+  }, [data, setMapLayerData, width])
 
   // use location state to get the url of the geojson file
   const { state: locationState } = useLocation()

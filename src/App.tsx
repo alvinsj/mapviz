@@ -23,14 +23,14 @@ const initialTabs = [
   {
     label: 'Open a map layer',
     key: 'explore',
-    element: <GeoJsonExplorer />,
+    element: (width: number) => <GeoJsonExplorer width={width - 32 - 8} />,
     active: true,
     path: '/',
   },
   {
     label: 'Available data',
     key: 'data',
-    element: <AvailableData />,
+    element: () => <AvailableData />,
     active: false,
     path: '/data',
   },
@@ -72,7 +72,7 @@ const Left: FC<{ width: number }> = ({ width }) => {
       <TabContent className="tabContent">
         <Routes>
           {tabs.map((tab) => (
-            <Route key={tab.key} path={tab.path} element={tab.element} />
+            <Route key={tab.key} path={tab.path} element={tab.element(width)} />
           ))}
         </Routes>
       </TabContent>
