@@ -14,6 +14,8 @@ import { useContextSelector } from 'use-context-selector'
 
 import Tree from './Tree'
 import context from '../context'
+import { useLocation } from 'react-router-dom'
+import useMultiPolygonLayer from '../hooks/useMultiPolygonLayer'
 
 const label = (title: string, count?: number) => (
   <span style={{ color: 'gray' }}>
@@ -63,7 +65,7 @@ const fileListRenderer = (
 const GeoJsonExplorer = () => {
   const setContextState = useContextSelector(context, (v) => (v as any)[1])
   const setMapLayerData = useCallback(
-    (data: GeoJSONFeature) => {
+    (data: mapboxgl.MapboxGeoJSONFeature) => {
       setContextState((s: any) => ({
         ...s,
         mapLayerData: data,
@@ -72,11 +74,11 @@ const GeoJsonExplorer = () => {
     [setContextState]
   )
   // read the geojson file
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<mapboxgl.MapboxGeoJSONFeature | null>(null)
 
   // show structure of the geojson file recursively in a tree
   const [tree, setTree] = useState(null)
-
+  const [file, setFile] = useState('')
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (data) {
@@ -85,6 +87,21 @@ const GeoJsonExplorer = () => {
       setLoading(false)
     }
   }, [data, setMapLayerData])
+
+  // use location state to get the url of the geojson file
+  const { state: locationState } = useLocation()
+  const { mapLayerData } = useMultiPolygonLayer(
+    locationState?.url || ''
+  )
+  const showSelectedLayer = !!locationState?.url && !file
+  const isLoading = loading || (locationState?.url && !mapLayerData)
+  useEffect(() => {
+    if (mapLayerData) {
+      setLoading(true)
+      setTree(null)
+      setData(mapLayerData)
+    }
+  }, [mapLayerData])
 
   return (
     <Container padding="md">
@@ -99,11 +116,18 @@ const GeoJsonExplorer = () => {
             readAs="readAsText"
             onLoad={(result) => {
               setLoading(true)
+              setFile(result as string)
+              setTree(null)
               setData(JSON.parse(result as string))
             }}
           />
         </Field>
-        {loading && <LoadingPlaceholder text="Loading data..." />}
+        {showSelectedLayer && (
+          <a href={locationState.url} target="_blank" rel="noreferrer">
+            {locationState.url}
+          </a>
+        )}
+        {isLoading && <LoadingPlaceholder text="Loading data..." />}
         {!!tree && (
           <Field label="Structure">
             <>{tree}</>

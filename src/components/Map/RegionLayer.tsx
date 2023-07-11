@@ -8,15 +8,21 @@ import useHoverFeature from '../../hooks/useHoverFeature'
 import { useFeatureFlagContext } from '../../contexts/FeatureFlagContext'
 import { SHOW_REGIONS } from '../../config/featureFlags'
 
-import { regionLayerStyle, highlightRegionLayerStyle } from './layerStyles'
+import {
+  regionLayerStyle,
+  highlightRegionLayerStyle,
+  pointLayerStyle,
+} from './layerStyles'
 
 const FEAT_PROPERTY_NAME = 'Name'
 
 export type MapPluginComponentProps = { mapId: string }
 export function RegionLayer({ mapId }: MapPluginComponentProps) {
-
   const [theme] = useThemeContext()
-  const mapLayerData = useContextSelector(context, v => (v as any)[0].mapLayerData)
+  const mapLayerData = useContextSelector(
+    context,
+    (v) => (v as any)[0].mapLayerData
+  )
 
   const {
     feature: hoverRegion,
@@ -38,6 +44,8 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
     else remove()
   }, [add, flagShowRegions, remove])
 
+  if (!mapLayerData) return false
+
   return (
     <Source type="geojson" data={mapLayerData}>
       <Layer
@@ -56,6 +64,12 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         layout={{
           visibility: flagShowRegions && mapLayerData ? 'visible' : 'none',
         }}
+      />
+      <Layer
+        {...pointLayerStyle({ theme })}
+        filter={['==', '$type', 'Point']}
+        source="regions"
+        id="region-points"
       />
     </Source>
   )

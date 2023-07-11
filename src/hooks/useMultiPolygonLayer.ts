@@ -5,18 +5,16 @@ import { MapboxGeoJSONFeature } from 'react-map-gl'
 function useMultiPolygonLayer(layerUrl: string): {
   mapLayerData?: MapboxGeoJSONFeature
   error?: string
+  loading: boolean
 } {
   const [mapLayerData, setMapLayerData] = useMemoizedState(undefined, layerUrl)
   const [error, setError] = useState()
 
   useEffect(() => {
-    if (mapLayerData) return // guard
-
-    const token = localStorage.getItem('token')?.toString()
+    if (mapLayerData || !layerUrl) return // guard
 
     const authHeaders = new Headers()
     authHeaders.append('Accept', 'application/vnd.geo+json')
-    if (token) authHeaders.append('Authorization', `Bearer ${token}`)
 
     fetch(layerUrl, { headers: authHeaders })
       .then((response) => response.json())
@@ -30,11 +28,12 @@ function useMultiPolygonLayer(layerUrl: string): {
         setError(e.message)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // once
+  }, [layerUrl]) // only run when layerUrl changes
 
   return {
     mapLayerData,
     error,
+    loading: !mapLayerData,
   }
 }
 export default useMultiPolygonLayer

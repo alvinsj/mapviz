@@ -1,4 +1,4 @@
-import { FillLayer } from 'react-map-gl'
+import { FillLayer, CircleLayer } from 'react-map-gl'
 import { Theme } from '../../types'
 
 export const regionLayerStyle = ({
@@ -14,6 +14,19 @@ export const regionLayerStyle = ({
       'fill-outline-color': theme === 'dark' ? 'white' : 'black',
     },
   } as FillLayer)
+
+export const pointLayerStyle = ({
+  theme,
+  modifyColor = (v) => v,
+}: LayerStyleOpts): CircleLayer =>
+  ({
+    type: 'circle',
+    paint: {
+      'circle-color':
+        theme === 'dark' ? modifyColor('cyan') : modifyColor('blue'),
+      'circle-radius': 5,
+    },
+  } as CircleLayer)
 
 export const highlightRegionLayerStyle = ({
   theme,
