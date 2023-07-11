@@ -4,7 +4,7 @@ This repo tries:
 - Map viz with maplibre-gl and custom tile/layer
 - Use of mediator/plugin pattern 
 
-![mapgl-sg](https://user-images.githubusercontent.com/243186/188585641-006eabc2-48ec-4018-9d6f-6a768fc7cf16.gif)
+<img width="1470" alt="Screenshot 2023-07-11 at 9 09 41 PM" src="https://github.com/alvinsj/mapgl-sg/assets/243186/69371a35-97c2-4937-995c-a497ee07ea30">
 
 ### Add environment variables 
 
