@@ -27,7 +27,7 @@ const fileListRenderer = (
     />
   )
 }
-export type Props = { width: number, theme: any }
+export type Props = { width: number; theme: any }
 const GeoJsonExplorer: FC<Props> = ({ width }) => {
   const setContextState = useContextSelector(context, (v) => (v as any)[1])
   const setMapLayerData = useCallback(
@@ -56,9 +56,7 @@ const GeoJsonExplorer: FC<Props> = ({ width }) => {
 
   // use location state to get the url of the geojson file
   const { state: locationState } = useLocation()
-  const { mapLayerData } = useMultiPolygonLayer(
-    locationState?.url || ''
-  )
+  const { mapLayerData } = useMultiPolygonLayer(locationState?.url || '')
   const showSelectedLayer = !!locationState?.url && !file
   const isLoading = loading || (locationState?.url && !mapLayerData)
   useEffect(() => {
@@ -73,8 +71,8 @@ const GeoJsonExplorer: FC<Props> = ({ width }) => {
     <Container padding="md">
       <VerticalGroup spacing="md">
         <Field
-          label="Upload a geojson file"
-          description="Explore the content upon upload"
+          label="Upload a map layer"
+          description="Explore the structure, visualize the data on the map."
         >
           <FileDropzone
             fileListRenderer={fileListRenderer}

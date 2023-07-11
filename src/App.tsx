@@ -9,6 +9,7 @@ import context from './context'
 import { TabContent, TabsBar, Tab, PageToolbar } from '@grafana/ui'
 import AdjustableWidthLayout from './components/AdjustableWidthLayout'
 import AvailableData from './components/AvailableData'
+import QueryAPI from './components/QueryAPI'
 
 type StateProviderProps = {
   children: ReactNode
@@ -33,6 +34,13 @@ const initialTabs = [
     element: () => <AvailableData />,
     active: false,
     path: '/data',
+  },
+  {
+    label: 'Query API',
+    key: 'query',
+    element: (width: number) => <QueryAPI width={width - 32 - 8} />,
+    active: false,
+    path: '/query',
   },
 ]
 

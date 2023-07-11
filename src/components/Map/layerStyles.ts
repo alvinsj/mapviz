@@ -18,13 +18,43 @@ export const regionLayerStyle = ({
 export const pointLayerStyle = ({
   theme,
   modifyColor = (v) => v,
+}: LayerStyleOpts): Partial<CircleLayer> =>
+  ({
+    type: 'circle',
+    paint: {
+      'circle-color': [
+        'case',
+        ['to-boolean', ['get', 'color']],
+        ['get', 'color'],
+        theme === 'dark',
+        modifyColor('cyan'),
+        modifyColor('blue'),
+      ],
+      // ,
+      'circle-radius': 5,
+    },
+  } as Partial<CircleLayer>)
+
+export const continuosPointLayerStyle = (): Partial<CircleLayer> =>
+  ({
+    type: 'circle',
+    paint: {
+      'circle-color': ['get', 'color'],
+      'circle-radius': 5,
+    },
+  } as Partial<CircleLayer>)
+
+export const highlightPointLayerStyle = ({
+  theme,
+  modifyColor = (v) => v,
 }: LayerStyleOpts): CircleLayer =>
   ({
     type: 'circle',
     paint: {
       'circle-color':
         theme === 'dark' ? modifyColor('cyan') : modifyColor('blue'),
-      'circle-radius': 5,
+      'circle-radius': 7,
+      'circle-opacity': 0.7,
     },
   } as CircleLayer)
 

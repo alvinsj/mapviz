@@ -1,4 +1,4 @@
-import { Container } from '@grafana/ui'
+import { Container, Field } from '@grafana/ui'
 import { Link } from 'react-router-dom'
 
 const files = import.meta.glob('../../public/layers/*.geojson', {
@@ -13,19 +13,21 @@ const fileUrls = Object.keys(files).map((key) => [
 const AvailableData = () => {
   return (
     <Container padding="md">
-      <ol>
-        {fileUrls.map(([fileName, url]) => (
-          <li key={fileName}>
-            <Link
-              to={'/'}
-              state={{ fromAvailableData: true, url: url }}
-            >
-              {fileName}
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </Container >
+      <Field
+        label="Preload geojson files"
+        description="Click on a file to open it."
+      >
+        <ol>
+          {fileUrls.map(([fileName, url]) => (
+            <li key={fileName}>
+              <Link to={'/'} state={{ fromAvailableData: true, url: url }}>
+                {fileName}
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </Field>
+    </Container>
   )
 }
 

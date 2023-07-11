@@ -112,10 +112,15 @@ type MapEntries = (entry: [string, any]) => Item
 
 const entriesToItems: MapEntries = ([key, value]) => {
   if (value && typeof value === 'object') {
+    const items = Object.entries(value).map(entriesToItems)
     return {
-      name: key,
+      name: (
+        <span>
+          {key} <sup>({items.length})</sup>
+        </span>
+      ),
       expanded: false,
-      children: Object.entries(value).map(entriesToItems),
+      children: items,
     }
   } else {
     return {

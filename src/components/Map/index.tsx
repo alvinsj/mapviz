@@ -12,6 +12,7 @@ import RegionLayer, {
 
 import Map from './Map'
 import { addMapPlugins } from './MapPluginMediator'
+import APIMapLayer from './APIMapLayer'
 
 export default compose(
   provideFeatureFlags,
@@ -24,6 +25,10 @@ export default compose(
         customControls: RegionLayerControls,
       },
     },
+    {
+      name: 'APIMapLayer',
+      component: APIMapLayer,
+    }
     // {
     //   name: 'CustomLayer',
     //   component: CustomLayer,
