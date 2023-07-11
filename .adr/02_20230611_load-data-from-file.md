@@ -11,6 +11,7 @@ In the beginning of finding out what works for a mapviz, geojson data is needed 
 ## Decision
 
 Loading a map layer from an file input seems like an easy way to do it, rather than setting up databases of different geojson.
+Also adding some immediate available data list to load.
 
 ## Consequences
 
