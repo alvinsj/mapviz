@@ -45,10 +45,10 @@ export function APIMapLayer({ mapId }: MapPluginComponentProps) {
   if (!apiLayerData) return <div />
 
   return (
-    <Source type="geojson" data={apiLayerData}>
+    <Source type="geojson" data={{ ...apiLayerData }}>
       <Layer
         id="api-points"
-        {...continuosPointLayerStyle()}
+        {...(continuosPointLayerStyle() as any)}
         filter={['==', '$type', 'Point']}
       />
       <Layer

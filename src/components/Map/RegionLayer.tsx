@@ -66,7 +66,7 @@ export function RegionLayer({ mapId }: MapPluginComponentProps) {
         }}
       />
       <Layer
-        {...pointLayerStyle({ theme })}
+        {...(pointLayerStyle({ theme }) as any)}
         filter={['==', '$type', 'Point']}
         source="regions"
         id="region-points"

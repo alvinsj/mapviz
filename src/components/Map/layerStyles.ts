@@ -1,5 +1,6 @@
 import { FillLayer, CircleLayer } from 'react-map-gl'
 import { Theme } from '../../types'
+import { Expression } from 'mapbox-gl'
 
 export const regionLayerStyle = ({
   theme,
@@ -29,8 +30,7 @@ export const pointLayerStyle = ({
         theme === 'dark',
         modifyColor('cyan'),
         modifyColor('blue'),
-      ],
-      // ,
+      ] as Expression,
       'circle-radius': 5,
     },
   } as Partial<CircleLayer>)

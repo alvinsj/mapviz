@@ -1,5 +1,5 @@
 import { Container } from '@grafana/ui'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, FC } from 'react'
 import { useContextSelector } from 'use-context-selector'
 import useSWR from 'swr'
 import { mergeWith, isArray } from 'lodash'
@@ -17,7 +17,7 @@ const boundsInQuery = {
   lomax: bounds[2] + '',
   lamax: bounds[3] + '',
 }
-function customizer(objValue, srcValue) {
+function customizer(objValue: any, srcValue: any) {
   if (isArray(objValue)) {
     return objValue.concat(srcValue)
   }
@@ -45,7 +45,7 @@ const propertyMap = [
 const makeLens = (path: string) => curryRight(get, 2)(path)
 
 const memoryCache = {} as any
-const generateRandomDarkThemeColor = (key) => {
+const generateRandomDarkThemeColor = (key: string) => {
   if (memoryCache[key]) {
     return memoryCache[key]
   }
@@ -58,13 +58,21 @@ const generateRandomDarkThemeColor = (key) => {
   return memoryCache[key]
 }
 
-const toPointGeoJsonFeature = (
+type GeoJsonFeatureMapper = (
+  key: string,
+  point: any,
+  latLens: any,
+  longLens: any,
+  propertyMap: any
+) => GeoJSON.Feature
+
+const toPointGeoJsonFeature: GeoJsonFeatureMapper = (
   key,
   point,
   latLens,
   longLens,
   propertyMap
-): GeoJSON.Feature => {
+) => {
   const [longitude, latitude] = [longLens(point), latLens(point)]
   return {
     type: 'Feature',
@@ -83,9 +91,13 @@ const toPointGeoJsonFeature = (
   }
 }
 
-const fetcher = (url) => fetch(url).then((r) => r.json())
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-const FetchStatus = ({ url, onUpdateData }) => {
+type FetchStatusProps = {
+  url: string
+  onUpdateData: (data: mapboxgl.MapboxGeoJSONFeature) => void
+}
+const FetchStatus: FC<FetchStatusProps> = ({ url, onUpdateData }) => {
   const setContextState = useContextSelector(context, (v) => (v as any)[1])
   const setAPILayerData = useCallback(
     (data: GeoJSON.FeatureCollection) => {
@@ -109,7 +121,7 @@ const FetchStatus = ({ url, onUpdateData }) => {
       const keyLens = makeLens('0')
       const dataPointsLens = makeLens('states')
 
-      const points = dataPointsLens(data).map((point) =>
+      const points = dataPointsLens(data).map((point: object) =>
         toPointGeoJsonFeature(
           keyLens(point),
           point,
