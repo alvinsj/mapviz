@@ -1,6 +1,6 @@
 import { FillLayer, CircleLayer } from 'react-map-gl'
 import { Theme } from '../../types'
-import { Expression } from 'mapbox-gl'
+import { Expression, LineLayer } from 'mapbox-gl'
 
 export const regionLayerStyle = ({
   theme,
@@ -43,6 +43,19 @@ export const continuosPointLayerStyle = (): Partial<CircleLayer> =>
       'circle-radius': 5,
     },
   } as Partial<CircleLayer>)
+
+export const continuosLineLayerStyle = (): Partial<LineLayer> =>
+  ({
+    type: 'line',
+    paint: {
+      'line-color': ['get', 'color'],
+      'line-width': 8,
+    },
+    layout: {
+      'line-join': 'round',
+      'line-cap': 'round',
+    },
+  } as Partial<LineLayer>)
 
 export const highlightPointLayerStyle = ({
   theme,
