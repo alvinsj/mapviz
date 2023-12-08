@@ -1,0 +1,593 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9965, 1.356]
+      },
+      "properties": {
+        "color": "rgb(88,244,123)",
+        "icao24": "5001df",
+        "callsign": "T7CAL",
+        "origin_country": "San Marino",
+        "time_position": "1689103108",
+        "last_contact": "1689103120",
+        "longitude": "103.9965",
+        "latitude": "1.356",
+        "baro_altitude": "160.02",
+        "on_ground": "false",
+        "velocity": "84.93",
+        "true_track": "202.06",
+        "vertical_rate": "13",
+        "sensors": "null",
+        "geo_altitude": "106.68",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.0332, 1.2937]
+      },
+      "properties": {
+        "color": "rgb(70,251,107)",
+        "icao24": "76bd46",
+        "callsign": "TGW898",
+        "origin_country": "Singapore",
+        "time_position": "1689103287",
+        "last_contact": "1689103288",
+        "longitude": "104.0332",
+        "latitude": "1.2937",
+        "baro_altitude": "1051.56",
+        "on_ground": "false",
+        "velocity": "139.49",
+        "true_track": "84.71",
+        "vertical_rate": "10.73",
+        "sensors": "null",
+        "geo_altitude": "1089.66",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9965, 1.356]
+      },
+      "properties": {
+        "color": "rgb(88,244,123)",
+        "icao24": "5001df",
+        "callsign": "T7CAL",
+        "origin_country": "San Marino",
+        "time_position": "1689103108",
+        "last_contact": "1689103120",
+        "longitude": "103.9965",
+        "latitude": "1.356",
+        "baro_altitude": "160.02",
+        "on_ground": "false",
+        "velocity": "84.93",
+        "true_track": "202.06",
+        "vertical_rate": "13",
+        "sensors": "null",
+        "geo_altitude": "106.68",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.0503, 1.2953]
+      },
+      "properties": {
+        "color": "rgb(70,251,107)",
+        "icao24": "76bd46",
+        "callsign": "TGW898",
+        "origin_country": "Singapore",
+        "time_position": "1689103301",
+        "last_contact": "1689103301",
+        "longitude": "104.0503",
+        "latitude": "1.2953",
+        "baro_altitude": "1196.34",
+        "on_ground": "false",
+        "velocity": "142.01",
+        "true_track": "85.01",
+        "vertical_rate": "12.03",
+        "sensors": "null",
+        "geo_altitude": "1211.58",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9965, 1.356]
+      },
+      "properties": {
+        "color": "rgb(88,244,123)",
+        "icao24": "5001df",
+        "callsign": "T7CAL",
+        "origin_country": "San Marino",
+        "time_position": "1689103108",
+        "last_contact": "1689103120",
+        "longitude": "103.9965",
+        "latitude": "1.356",
+        "baro_altitude": "160.02",
+        "on_ground": "false",
+        "velocity": "84.93",
+        "true_track": "202.06",
+        "vertical_rate": "13",
+        "sensors": "null",
+        "geo_altitude": "106.68",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.0842, 1.2985]
+      },
+      "properties": {
+        "color": "rgb(70,251,107)",
+        "icao24": "76bd46",
+        "callsign": "TGW898",
+        "origin_country": "Singapore",
+        "time_position": "1689103327",
+        "last_contact": "1689103327",
+        "longitude": "104.0842",
+        "latitude": "1.2985",
+        "baro_altitude": "1524",
+        "on_ground": "false",
+        "velocity": "144.36",
+        "true_track": "83.86",
+        "vertical_rate": "13.98",
+        "sensors": "null",
+        "geo_altitude": "1531.62",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.977, 1.3475]
+      },
+      "properties": {
+        "color": "rgb(127,196,242)",
+        "icao24": "76cda4",
+        "callsign": "SIA392",
+        "origin_country": "Singapore",
+        "time_position": "1689103396",
+        "last_contact": "1689103397",
+        "longitude": "103.977",
+        "latitude": "1.3475",
+        "baro_altitude": "259.08",
+        "on_ground": "false",
+        "velocity": "86.55",
+        "true_track": "201.99",
+        "vertical_rate": "13.98",
+        "sensors": "null",
+        "geo_altitude": "259.08",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.977, 1.3475]
+      },
+      "properties": {
+        "color": "rgb(127,196,242)",
+        "icao24": "76cda4",
+        "callsign": "SIA392",
+        "origin_country": "Singapore",
+        "time_position": "1689103396",
+        "last_contact": "1689103397",
+        "longitude": "103.977",
+        "latitude": "1.3475",
+        "baro_altitude": "259.08",
+        "on_ground": "false",
+        "velocity": "86.55",
+        "true_track": "201.99",
+        "vertical_rate": "13.98",
+        "sensors": "null",
+        "geo_altitude": "259.08",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9676, 1.3248]
+      },
+      "properties": {
+        "color": "rgb(127,196,242)",
+        "icao24": "76cda4",
+        "callsign": "SIA392",
+        "origin_country": "Singapore",
+        "time_position": "1689103428",
+        "last_contact": "1689103428",
+        "longitude": "103.9676",
+        "latitude": "1.3248",
+        "baro_altitude": "586.74",
+        "on_ground": "false",
+        "velocity": "89.24",
+        "true_track": "202.72",
+        "vertical_rate": "5.2",
+        "sensors": "null",
+        "geo_altitude": "586.74",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.0546, 1.4936]
+      },
+      "properties": {
+        "color": "rgb(88,244,123)",
+        "icao24": "5001df",
+        "callsign": "T7CAL",
+        "origin_country": "San Marino",
+        "time_position": "1689103449",
+        "last_contact": "1689103449",
+        "longitude": "104.0546",
+        "latitude": "1.4936",
+        "baro_altitude": "883.92",
+        "on_ground": "false",
+        "velocity": "85.25",
+        "true_track": "203.47",
+        "vertical_rate": "-5.53",
+        "sensors": "null",
+        "geo_altitude": "914.4",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9604, 1.3077]
+      },
+      "properties": {
+        "color": "rgb(127,196,242)",
+        "icao24": "76cda4",
+        "callsign": "SIA392",
+        "origin_country": "Singapore",
+        "time_position": "1689103449",
+        "last_contact": "1689103449",
+        "longitude": "103.9604",
+        "latitude": "1.3077",
+        "baro_altitude": "662.94",
+        "on_ground": "false",
+        "velocity": "104.16",
+        "true_track": "203.27",
+        "vertical_rate": "4.55",
+        "sensors": "null",
+        "geo_altitude": "678.18",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.0473, 1.4771]
+      },
+      "properties": {
+        "color": "rgb(88,244,123)",
+        "icao24": "5001df",
+        "callsign": "T7CAL",
+        "origin_country": "San Marino",
+        "time_position": "1689103472",
+        "last_contact": "1689103472",
+        "longitude": "104.0473",
+        "latitude": "1.4771",
+        "baro_altitude": "762",
+        "on_ground": "false",
+        "velocity": "86.6",
+        "true_track": "203.82",
+        "vertical_rate": "-5.2",
+        "sensors": "null",
+        "geo_altitude": "777.24",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9914, 1.382]
+      },
+      "properties": {
+        "color": "rgb(148,97,114)",
+        "icao24": "4d0102",
+        "callsign": "CLX9002",
+        "origin_country": "Luxembourg",
+        "time_position": "1689103221",
+        "last_contact": "1689103221",
+        "longitude": "103.9914",
+        "latitude": "1.382",
+        "baro_altitude": "76.2",
+        "on_ground": "false",
+        "velocity": "80.45",
+        "true_track": "202.96",
+        "vertical_rate": "-4.23",
+        "sensors": "null",
+        "geo_altitude": "76.2",
+        "squawk": "2657",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.9514, 1.2865]
+      },
+      "properties": {
+        "color": "rgb(127,196,242)",
+        "icao24": "76cda4",
+        "callsign": "SIA392",
+        "origin_country": "Singapore",
+        "time_position": "1689103472",
+        "last_contact": "1689103472",
+        "longitude": "103.9514",
+        "latitude": "1.2865",
+        "baro_altitude": "754.38",
+        "on_ground": "false",
+        "velocity": "118.96",
+        "true_track": "202.91",
+        "vertical_rate": "4.88",
+        "sensors": "null",
+        "geo_altitude": "777.24",
+        "squawk": "null",
+        "spi": "false",
+        "position_source": "0",
+        "category": "undefined"
+      }
+    }
+  ]
+}
