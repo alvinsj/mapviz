@@ -1,51 +1,16 @@
 {
-  "name": "react-map-gl",
-  "private": true,
+  "name": "mapviz",
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint src/App.tsx"
-  },
-  "dependencies": {
-    "@grafana/ui": "^10.0.1",
-    "@turf/bbox": "^6.5.0",
-    "@turf/bbox-polygon": "^6.5.0",
-    "@turf/helpers": "^6.5.0",
-    "color2k": "^2.0.0",
-    "lodash.flowright": "^3.5.0",
-    "lodash.throttle": "^4.1.1",
-    "mapbox-gl": "npm:empty-npm-package@1.0.0",
-    "maplibre-gl": "3.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-grid-layout": "^1.3.4",
-    "react-map-gl": "^7.0.19",
-    "react-router-dom": "^6.14.1",
-    "react-virtualized": "^9.22.5",
-    "sass": "^1.63.6",
-    "scheduler": "^0.23.0",
-    "use-context-selector": "^1.4.1"
-  },
-  "devDependencies": {
-    "@types/lodash.flowright": "^3.5.7",
-    "@types/lodash.throttle": "^4.1.7",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@types/react-virtualized": "^9.21.22",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "@typescript-eslint/parser": "^5.60.1",
-    "@vitejs/plugin-react": "^4.0.1",
-    "eslint": "^8.23.0",
-    "eslint-plugin-react": "^7.31.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^2.7.1",
-    "typescript": "^4.6.4",
-    "vite": "^4.4.2"
-  },
+  "main": "index.js",
+  "repository": "git@github.com:alvinsj/mapviz.git",
+  "author": "Alvin Ng <243186+alvinsj@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
-    "node": "18.x.x"
+    "node": ">=18.x.x",
+    "npm": ">=7.x.x"
   }
 }

@@ -1,10 +1,10 @@
-# mapgl-sg
+# mapviz
 
 This repo tries:
 - Map viz with maplibre-gl and custom tile/layer
 - Use of mediator/plugin pattern 
 
-<img width="1470" alt="Screenshot 2023-07-11 at 9 09 41 PM" src="https://github.com/alvinsj/mapgl-sg/assets/243186/69371a35-97c2-4937-995c-a497ee07ea30">
+<img width="1470" alt="Screenshot 2023-07-11 at 9 09 41 PM" src="https://github.com/alvinsj/mapviz/assets/243186/69371a35-97c2-4937-995c-a497ee07ea30">
 
 ### Add environment variables 
 
